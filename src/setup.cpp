@@ -2,13 +2,15 @@
 
 
 float vertices[] = {
-     -1.0f, -0.0f, 0.0f,
-     -0.5f, -1.0f, 0.0f,
-     -0.5f,  1.0f, 0.0f,
+    -0.50f, -1.0f, 0.0f,
+    -1.0f, -0.0f, 0.0f,
+    -0.50f,  1.0f, 0.0f,
 
-     1.0f, -0.0f, 0.0f,
-     0.5f, -1.0f, 0.0f,
-     0.5f,  1.0f, 0.0f,
+    0.50f,  1.0f, 0.0f,
+    1.0f, -0.0f, 0.0f,
+    0.50f, -1.0f, 0.0f,
+    -0.50f, -1.0f, 0.0f,
+    -1.0f, -0.0f, 0.0f,
 };
 
 bool setup( GLuint* shaderProgram, GLuint* VertexArrayObject, GLFWwindow** window)
@@ -21,7 +23,7 @@ bool setup( GLuint* shaderProgram, GLuint* VertexArrayObject, GLFWwindow** windo
 
 
     // create a window object
-    *window = glfwCreateWindow(800, 600, "OpenGL???", NULL, NULL);
+    *window = glfwCreateWindow(800, 800, "OpenGL???", NULL, NULL);
 
     if (*window == NULL)
     {
@@ -38,7 +40,7 @@ bool setup( GLuint* shaderProgram, GLuint* VertexArrayObject, GLFWwindow** windo
     }
 
     // setup viewport
-    glViewport(0, 0, 800, 600);
+    glViewport(0, 0, 800, 800);
     glfwSetFramebufferSizeCallback(*window, framebuffer_size_callback);
 
 
@@ -53,16 +55,19 @@ bool setup( GLuint* shaderProgram, GLuint* VertexArrayObject, GLFWwindow** windo
 // this seems terrible
 const char* vertexShaderSource = "#version 330 core\n"
     "layout (location = 0) in vec3 aPos;\n"
+    "out vec4 color;"
     "void main()\n"
     "{\n"
     "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+    "   color = vec4((aPos.x+1.0)/2.0, (aPos.y+1.0)/2.0, (aPos.y+1.0)/2.0, 1.0);"
     "}\0";
 
 const char* fragmentShaderSource = "#version 330 core\n"
     "out vec4 FragColor;\n"
+    "in vec4 color;"
     "void main()"
     "{"
-    "FragColor = vec4(.8f, 0.2f, 0.2f, 1.0f);"
+    "FragColor = color;"
     "}";
 
 

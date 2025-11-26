@@ -47,7 +47,7 @@ void renderTriangle(GLuint VertexArrayObject, GLuint shaderProgram)
    
      
     
-     glDrawArrays(GL_TRIANGLES, (frame/30)%4, 3);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, (frame/20)%7+2);
    
 
     // glDrawArrays(GL_TRIANGLES, 3, 3);
