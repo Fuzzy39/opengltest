@@ -41,13 +41,23 @@ int  main(int argc, char** argv)
 void renderTriangle(GLuint VertexArrayObject, GLuint shaderProgram)
 {
 
-    // Do things (TM!)
+
+    float time = glfwGetTime();
+    int vertexColorLocation = glGetUniformLocation(shaderProgram, "time");
+
+    float period = 4.0f;
+
     glUseProgram(shaderProgram);
+    glUniform1f(vertexColorLocation, (time*2*M_PI)/period);
+    // you have to use a uniform after useing the shader program;
+    // setting the unifrom requires it.
+    
+    // Do things (TM!)
     glBindVertexArray(VertexArrayObject);
    
      
     
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, (frame/20)%7+2);
+    glDrawArrays(GL_TRIANGLES, 0, numPoints*3);//(int)(time*(7/period))%7+2);
    
 
     // glDrawArrays(GL_TRIANGLES, 3, 3);
@@ -69,4 +79,11 @@ void handleInput(GLFWwindow* window)
     {
         glfwSetWindowShouldClose(window, true);
     }
+}
+
+float sinusoid(float t, float period, float phaseAngle)
+{
+    float progressRadians = (t*2.0f*M_PI)/period;
+    float phaseAngleRadians = 2.0f*M_PI*phaseAngle;
+    return (sinf(progressRadians+phaseAngleRadians)+1.0f)/2.0f;
 }

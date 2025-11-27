@@ -1,5 +1,6 @@
 #include "glTest.hpp"
 
+int numPoints = 3;
 
 float vertices[] = {
     -0.50f, -1.0f, 0.0f,
@@ -55,11 +56,18 @@ bool setup( GLuint* shaderProgram, GLuint* VertexArrayObject, GLFWwindow** windo
 // this seems terrible
 const char* vertexShaderSource = "#version 330 core\n"
     "layout (location = 0) in vec3 aPos;\n"
-    "out vec4 color;"
+    "layout (location = 1) in float theta;\n"
+    "uniform float time;"
+    "out vec4 color;\n"
+    
     "void main()\n"
     "{\n"
+    "const float M_PI = 3.1415926535897932384626433832795;"
     "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "   color = vec4((aPos.x+1.0)/2.0, (aPos.y+1.0)/2.0, (aPos.y+1.0)/2.0, 1.0);"
+    "   if(theta == -1) {"
+        "    color = vec4(1.0, 1.0, 1.0, 1.0); return;"
+        "}"
+    "   color = vec4( (sin(theta+time)+1)/2.0, (sin(theta+time+(2*M_PI)/3)+1)/2.0, (sin(theta+time+(4*M_PI)/3)+1)/2.0, 1.0);"
     "}\0";
 
 const char* fragmentShaderSource = "#version 330 core\n"
@@ -67,7 +75,7 @@ const char* fragmentShaderSource = "#version 330 core\n"
     "in vec4 color;"
     "void main()"
     "{"
-    "FragColor = color;"
+    "FragColor = color;"    
     "}";
 
 
@@ -158,13 +166,21 @@ unsigned int SetupVertexArrayObj()
     unsigned int VertexBufferObject;
     glGenBuffers(1, &VertexBufferObject);
     glBindBuffer(GL_ARRAY_BUFFER, VertexBufferObject); //assign VectexBufferObject as an array buffer (of which there can only be one?)
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+    // get data
+    int numVerticies = 0;
+    Vertex* data = Vertex::makeVerticies(numPoints, &numVerticies);
+   // std::cout<<(void*)(&(data[0].x))-(void*)(&data[0])<<"\n";
+    std::cout<<(offsetof(Vertex, angle))<<"\n";
+    glBufferData(GL_ARRAY_BUFFER, numVerticies*sizeof(Vertex), data, GL_STATIC_DRAW);
+    free(data);
 
 
     // explain to opengl the format of the vertex data we'll be giving it
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(offsetof(Vertex, x)));
     glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(offsetof(Vertex, angle)));
+    glEnableVertexAttribArray(1);
 
     return VAO;
 

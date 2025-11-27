@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.28)
 project(openGLTest LANGUAGES CXX C)
 
 
-add_executable(gltest "src/gl.c" "src/main.cpp" "src/setup.cpp")
+add_executable(gltest "src/gl.c" "src/main.cpp" "src/Vertex.cpp" "src/setup.cpp" )
 target_include_directories(gltest PUBLIC "include")
 
 #add_executable(test0 "src/test0.cpp" )
