@@ -1,21 +1,33 @@
 #include "glTest.hpp"
+#include <Shader.hpp>
 
 int frame = 0;
 
 int  main(int argc, char** argv)
 {
 
-    Shader test("no", "no");
+    
     srand(time(NULL));   // Initialization, should only be called once.
     std::cout << "Hello!\n";
    
-    GLuint shaderProgram, VertexArrayObject;
+    GLuint VertexArrayObject;
     GLFWwindow* window;
-    if (!setup(&shaderProgram, &VertexArrayObject, &window)) // this is ugly.
+    Shader* shader;
+ 
+   
+    if (!setup( &VertexArrayObject, &window)) // this is ugly.
     {
         return -1;
     }
    
+    try
+    {
+        shader= new Shader("shaders/vertex.glsl", "shaders/fragment.glsl");
+    }
+    catch(std::exception e)
+    {
+        return -1;
+    }
 
     // main loop
     while(!glfwWindowShouldClose(window))
@@ -27,41 +39,36 @@ int  main(int argc, char** argv)
         glClearColor(.4f, .6f, .8f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        renderTriangle(VertexArrayObject, shaderProgram);
+        renderTriangle(VertexArrayObject, *shader);
 
         glfwSwapBuffers(window);
         glfwPollEvents();    
     }
 
+    delete shader;
     glfwTerminate();
     std::cout<<"Goodbye!\n";
     return 0;
 }
 
 // is this how it works?
-void renderTriangle(GLuint VertexArrayObject, GLuint shaderProgram)
+void renderTriangle(GLuint VertexArrayObject, Shader& shader)
 {
 
 
     float time = glfwGetTime();
-    int vertexColorLocation = glGetUniformLocation(shaderProgram, "time");
-
     float period = 3.0f;
 
-    glUseProgram(shaderProgram);
-    glUniform1f(vertexColorLocation, (time*2*M_PI)/period);
+    shader.setFloat("time", (time*2*M_PI)/period);
+
     // you have to use a uniform after useing the shader program;
     // setting the unifrom requires it.
     
     // Do things (TM!)
     glBindVertexArray(VertexArrayObject);
-   
-     
     
     glDrawArrays(GL_TRIANGLES, 0, numPoints*3);//(int)(time*(7/period))%7+2);
-   
 
-    // glDrawArrays(GL_TRIANGLES, 3, 3);
 
 }
 

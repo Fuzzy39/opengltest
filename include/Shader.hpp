@@ -1,5 +1,4 @@
 #pragma once
-#include 
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 #include <string>
@@ -20,4 +19,8 @@ public:
     void setInt(const std::string &name, int value) const;   
     void setFloat(const std::string &name, float value) const;
 
-}
+private:
+    std::string* readFile(const std::string &path);
+    bool compileShaders(std::string* vertexShaderSource, std::string* fragmentShaderSource);
+
+};

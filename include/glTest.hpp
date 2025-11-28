@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <math.h>
+#include <Shader.hpp>
 
 extern int numPoints;
 
@@ -28,14 +29,13 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void handleInput(GLFWwindow* window);
 
 // setup
-bool setup(GLuint* shaderProgram, GLuint* VertexArrayObject, GLFWwindow** window);
-bool compileShaders(GLuint* shaderProgram);
+bool setup(GLuint* VertexArrayObject, GLFWwindow** window);
 GLuint SetupVertexArrayObj();
 
 
 
 // functions for runtime/post setup
-void renderTriangle(GLuint VertexArrayObject, GLuint shaderProgram);
+void renderTriangle(GLuint VertexArrayObject, Shader& shader);
 
 
 // util
