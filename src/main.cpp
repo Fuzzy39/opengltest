@@ -5,6 +5,7 @@ int frame = 0;
 int  main(int argc, char** argv)
 {
 
+    Shader test("no", "no");
     srand(time(NULL));   // Initialization, should only be called once.
     std::cout << "Hello!\n";
    

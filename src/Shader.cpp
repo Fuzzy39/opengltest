@@ -5,6 +5,11 @@
 Shader::Shader(const std::string &vertexPath, const std::string &fragementPath)
 {
     // do things, I guess
+    // first, read from file.
+    std::ifstream vertexFile(vertexPath);
+    // check if file exists
+
+
 }
 
 GLuint Shader::getHandle()
