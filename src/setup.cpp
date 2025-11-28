@@ -1,18 +1,7 @@
 #include "glTest.hpp"
 
-int numPoints = 3;
+int numPoints = 100;
 
-float vertices[] = {
-    -0.50f, -1.0f, 0.0f,
-    -1.0f, -0.0f, 0.0f,
-    -0.50f,  1.0f, 0.0f,
-
-    0.50f,  1.0f, 0.0f,
-    1.0f, -0.0f, 0.0f,
-    0.50f, -1.0f, 0.0f,
-    -0.50f, -1.0f, 0.0f,
-    -1.0f, -0.0f, 0.0f,
-};
 
 bool setup( GLuint* shaderProgram, GLuint* VertexArrayObject, GLFWwindow** window)
 {
@@ -63,7 +52,7 @@ const char* vertexShaderSource = "#version 330 core\n"
     "void main()\n"
     "{\n"
     "const float M_PI = 3.1415926535897932384626433832795;"
-    "   gl_Position = vec4(cos(theta)*length(aPos), sin(theta)*length(aPos), aPos.z, 1.0);\n"
+    "   gl_Position = vec4(cos(-.261*time+theta)*length(aPos), aPos.y, aPos.z, 1.0);\n"
     "   if(theta == -1) {"
         "    color = vec4(1.0, 1.0, 1.0, 1.0); return;"
         "}"

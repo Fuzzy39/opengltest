@@ -45,7 +45,7 @@ void renderTriangle(GLuint VertexArrayObject, GLuint shaderProgram)
     float time = glfwGetTime();
     int vertexColorLocation = glGetUniformLocation(shaderProgram, "time");
 
-    float period = 4.0f;
+    float period = 3.0f;
 
     glUseProgram(shaderProgram);
     glUniform1f(vertexColorLocation, (time*2*M_PI)/period);
