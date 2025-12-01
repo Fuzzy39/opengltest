@@ -9,10 +9,10 @@ out vec4 color;
 void main()
 {
     const float M_PI = 3.1415926535897932384626433832795;
-    gl_Position = vec4(cos(-.261*time+theta)*length(aPos), aPos.y, aPos.z, 1.0);
+    gl_Position = vec4(cos(-.261*time+theta)*length(aPos), sin(-.773*time+theta)*length(aPos), aPos.z, 1.0);
     if(theta == -1) 
     {
-        color = vec4(0.0, 0.0, 0.0, 1.0);
+        color = vec4(1.0, 1.0, 1.0, 1.0);
         return;
     }
 
