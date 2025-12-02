@@ -12,6 +12,12 @@ add_custom_command(
                 ${CMAKE_SOURCE_DIR}/shaders
                 ${CMAKE_CURRENT_BINARY_DIR}/shaders)
 
+add_custom_command(
+        TARGET gltest POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+                ${CMAKE_SOURCE_DIR}/resources
+                ${CMAKE_CURRENT_BINARY_DIR}/resources)
+
 #add_executable(test0 "src/test0.cpp" )
 #target_include_directories(gltest PUBLIC "include")
 

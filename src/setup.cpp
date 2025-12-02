@@ -1,6 +1,10 @@
 #include "glTest.hpp"
 
-int numPoints = 100;
+// stb image
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb/stb_image.h>
+
+int numPoints = 5;
 
 
 bool setup( GLuint* VertexArrayObject, GLFWwindow** window)
@@ -36,6 +40,20 @@ bool setup( GLuint* VertexArrayObject, GLFWwindow** window)
 
     // do the complicated openGL stuff now.
     *VertexArrayObject = SetupVertexArrayObj();
+
+
+    // out of a lack of knowing where to put it, texture related stuff.
+
+    int width, height, nrChannels;
+    unsigned char* data = stbi_load("resources/FROG.png", &width, &height, &nrChannels, 0);
+    if (data == NULL)
+    {
+        std::cout << "ERROR::RESOURCE: Couldn't open the frog image. Reason: " << stbi_failure_reason();
+        return false;
+    }
+
+    stbi_image_free(data);
+
 
     return true;
 }

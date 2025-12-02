@@ -1,9 +1,17 @@
 #ifndef glTest_h
 #define glTest_h
+
+// std library
+#include <iostream>
+#define _USE_MATH_DEFINES
+#include <math.h>
+
+
+// Opengl, GlFW, etc.
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
-#include <iostream>
-#include <math.h>
+
+// our stuff
 #include <Shader.hpp>
 
 extern int numPoints;
