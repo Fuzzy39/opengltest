@@ -4,10 +4,12 @@ out vec4 FragColor;
 in vec4 color;
 in vec2 texPos;
 
-uniform sampler2D tex;
+uniform float time;
 
+uniform sampler2D tex;
+uniform sampler2D tex2;
 
 void main()
 {
-    FragColor = texture(tex, texPos)*color; 
+    FragColor = mix(texture(tex2, texPos), texture(tex, texPos),(sin(time)+1)/2)*color; 
 }

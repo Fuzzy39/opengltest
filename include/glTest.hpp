@@ -26,6 +26,7 @@ void handleInput(GLFWwindow* window);
 // setup
 bool setup(GLuint* VertexArrayObject, GLFWwindow** window);
 GLuint SetupVertexArrayObj();
+GLuint MakeTexture(const char* path);
 
 
 

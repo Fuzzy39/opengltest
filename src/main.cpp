@@ -36,7 +36,7 @@ int  main(int argc, char** argv)
         frame++;
 
         // clear the buffer with a color.
-        glClearColor(.4f, .6f, .8f, 1.0f);
+        glClearColor(.2f, .2f, .3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         renderTriangle(VertexArrayObject, *shader);
@@ -59,6 +59,9 @@ void renderTriangle(GLuint VertexArrayObject, Shader& shader)
     // shader.use();
     // glUniform1f(uniformLocation, value);
 
+    //shader.use(); // don't forget to activate the shader before setting uniforms!  
+    shader.setInt("tex", 0); 
+    shader.setInt("tex2", 1);
    
 
     float time = glfwGetTime();

@@ -21,7 +21,7 @@ void main()
 
     color = vec4
     ( 
-        (sin(theta+time)+1)/4.0+1, 
+        (sin(theta+time)+1)/4.0+.5, 
         (sin(theta+time+(2*M_PI)/3)+1)/4.0+.5, 
         (sin(theta+time+(4*M_PI)/3)+1)/4.0+.5,
         1.0
