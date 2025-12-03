@@ -16,19 +16,6 @@
 
 extern int numPoints;
 
-struct Vertex
-{
-public:
-    float x;
-    float y;
-    float z;
-    float angle; // radians
-
-
-    Vertex(float x, float y, float z, float angle);
-    static Vertex fromAngle(float theta);
-    static Vertex* makeVerticies(int points, int* count); // returns an array of verticies number+1 in size
-};
 
 
 

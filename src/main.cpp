@@ -55,9 +55,14 @@ int  main(int argc, char** argv)
 void renderTriangle(GLuint VertexArrayObject, Shader& shader)
 {
 
+    // int uniformLocation = glGetUniformLocation(shader.getHandle(), "");
+    // shader.use();
+    // glUniform1f(uniformLocation, value);
+
+   
 
     float time = glfwGetTime();
-    float period = 3.0f;
+    float period = 6.0f;
 
     shader.setFloat("time", (time*2*M_PI)/period);
 

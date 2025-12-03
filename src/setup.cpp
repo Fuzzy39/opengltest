@@ -1,10 +1,11 @@
 #include "glTest.hpp"
-
+#include "Vertex.hpp"   
 // stb image
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
-int numPoints = 5;
+
+int numPoints = 8;
 
 
 bool setup( GLuint* VertexArrayObject, GLFWwindow** window)
@@ -52,8 +53,27 @@ bool setup( GLuint* VertexArrayObject, GLFWwindow** window)
         return false;
     }
 
+    std::cout<<width<<", "<<height<<", nrChannels"<<nrChannels<<"\n";
+
+    unsigned int texture;
+    glGenTextures(1, &texture); 
+    
+    // wraping
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    // generate a texture from an image.            
+
+    glGenerateMipmap(GL_TEXTURE_2D);
     stbi_image_free(data);
 
+    glActiveTexture(GL_TEXTURE0);
 
     return true;
 }
@@ -78,17 +98,13 @@ unsigned int SetupVertexArrayObj()
     // get data
     int numVerticies = 0;
     Vertex* data = Vertex::makeVerticies(numPoints, &numVerticies);
-   // std::cout<<(void*)(&(data[0].x))-(void*)(&data[0])<<"\n";
+    // std::cout<<(void*)(&(data[0].x))-(void*)(&data[0])<<"\n";
     std::cout<<(offsetof(Vertex, angle))<<"\n";
     glBufferData(GL_ARRAY_BUFFER, numVerticies*sizeof(Vertex), data, GL_STATIC_DRAW);
     free(data);
 
 
-    // explain to opengl the format of the vertex data we'll be giving it
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(offsetof(Vertex, x)));
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(offsetof(Vertex, angle)));
-    glEnableVertexAttribArray(1);
+    Vertex::setVertexAttributes();
 
     return VAO;
 
