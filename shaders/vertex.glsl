@@ -13,9 +13,14 @@ out vec2 texPos;
     
 void main()
 {
-    texPos = inTexPos;
     const float M_PI = 3.1415926535897932384626433832795;
 
+
+    float texSpeed = 10;
+    float texMax = 2;
+    texPos = inTexPos*(((texMax-1)*((cos(texSpeed*time+M_PI)+1)/2))+1);
+
+   
     gl_Position = transform * vec4(aPos, 1.0f);
     //gl_Position = vec4(cos(-.261*time+theta)*length(aPos), sin(-.773*time+theta)*length(aPos), aPos.z, 1.0);
     
@@ -27,7 +32,7 @@ void main()
     }
 
     float colorMag = .5;
-    float speed = 14;
+    float speed = 30;
     color = vec4
     ( 
         (sin(theta+speed*time)+1)/4.0+colorMag, 

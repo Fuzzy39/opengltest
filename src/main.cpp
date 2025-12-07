@@ -65,18 +65,18 @@ void renderTriangle(GLuint VertexArrayObject, Shader& shader)
    
 
     float timeRaw = glfwGetTime();
-    float period = 12.0f;
-    float time =  (timeRaw*2*M_PI)/period;
+    float period = 3.0f;
+    float time =  (timeRaw)/period;
 
-    shader.setFloat("time", time);
+    shader.setFloat("time", time/(2*M_PI));
 
 
     // setup our transform matrix
     glm::mat4 trans = glm::mat4(1.0f);
-    glm::vec3 axis = glm::vec3(sin(2*time),1,0);
+    glm::vec3 axis = glm::vec3(sin(time),1,0);
     axis = axis/glm::length(axis);
     // no we have to do interesting things with the matrix.
-    trans = glm::rotate(trans, glm::radians(time*180), axis);
+    trans = glm::rotate(trans, glm::radians(time*90), axis);
     
     shader.use();
     unsigned int transformLoc = glGetUniformLocation(shader.getHandle(), "transform");
