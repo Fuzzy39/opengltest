@@ -16,7 +16,7 @@ void main()
     const float M_PI = 3.1415926535897932384626433832795;
 
 
-    float texSpeed = 10;
+    float texSpeed = 5;
     float texMax = 2;
     texPos = inTexPos*(((texMax-1)*((cos(texSpeed*time+M_PI)+1)/2))+1);
 

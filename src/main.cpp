@@ -1,28 +1,31 @@
 #include "glTest.hpp"
-#include <Shader.hpp>
+#include <Disk.hpp>
 
-int frame = 0;
 
 int  main(int argc, char** argv)
 {
+    // config
+    int sides = 100;
+    int textures = 5;
+    float period = 10.0f;
 
-    
     srand(time(NULL));   // Initialization, should only be called once.
     std::cout << "Hello!\n";
    
-    GLuint VertexArrayObject;
+    Disk* disk = nullptr;
     GLFWwindow* window;
-    Shader* shader;
+ 
  
    
-    if (!setup( &VertexArrayObject, &window)) // this is ugly.
+    if (!setup( &window)) // this is ugly.
     {
         return -1;
     }
    
     try
     {
-        shader= new Shader("shaders/vertex.glsl", "shaders/fragment.glsl");
+        // disk!
+        disk = new Disk(sides, textures);
     }
     catch(std::exception e)
     {
@@ -33,64 +36,24 @@ int  main(int argc, char** argv)
     while(!glfwWindowShouldClose(window))
     {
         handleInput(window);
-        frame++;
 
         // clear the buffer with a color.
         glClearColor(.2f, .2f, .3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        renderTriangle(VertexArrayObject, *shader);
+        
+
+        disk->setTime( glfwGetTime()/period);
+        disk->draw();
 
         glfwSwapBuffers(window);
         glfwPollEvents();    
     }
 
-    delete shader;
+
     glfwTerminate();
     std::cout<<"Goodbye!\n";
     return 0;
-}
-
-// is this how it works?
-void renderTriangle(GLuint VertexArrayObject, Shader& shader)
-{
-
-    // int uniformLocation = glGetUniformLocation(shader.getHandle(), "");
-    // shader.use();
-    // glUniform1f(uniformLocation, value);
-
-    //shader.use(); // don't forget to activate the shader before setting uniforms!  
-    shader.setInt("tex", 0); 
-    shader.setInt("tex2", 1);
-   
-
-    float timeRaw = glfwGetTime();
-    float period = 3.0f;
-    float time =  (timeRaw)/period;
-
-    shader.setFloat("time", time/(2*M_PI));
-
-
-    // setup our transform matrix
-    glm::mat4 trans = glm::mat4(1.0f);
-    glm::vec3 axis = glm::vec3(sin(time),1,0);
-    axis = axis/glm::length(axis);
-    // no we have to do interesting things with the matrix.
-    trans = glm::rotate(trans, glm::radians(time*90), axis);
-    
-    shader.use();
-    unsigned int transformLoc = glGetUniformLocation(shader.getHandle(), "transform");
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
-
-    // you have to use a uniform after useing the shader program;
-    // setting the unifrom requires it.
-    
-    // Do things (TM!)
-    glBindVertexArray(VertexArrayObject);
-    
-    glDrawArrays(GL_TRIANGLES, 0, numPoints*3);//(int)(time*(7/period))%7+2);
-
-
 }
 
 
@@ -110,9 +73,3 @@ void handleInput(GLFWwindow* window)
     }
 }
 
-float sinusoid(float t, float period, float phaseAngle)
-{
-    float progressRadians = (t*2.0f*M_PI)/period;
-    float phaseAngleRadians = 2.0f*M_PI*phaseAngle;
-    return (sinf(progressRadians+phaseAngleRadians)+1.0f)/2.0f;
-}

@@ -5,10 +5,9 @@
 #include <stb/stb_image.h>
 
 
-int numPoints = 8;
 
 
-bool setup( GLuint* VertexArrayObject, GLFWwindow** window)
+bool setup(GLFWwindow** window)
 {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -39,10 +38,6 @@ bool setup( GLuint* VertexArrayObject, GLFWwindow** window)
     glfwSetFramebufferSizeCallback(*window, framebuffer_size_callback);
 
 
-    // do the complicated openGL stuff now.
-    *VertexArrayObject = SetupVertexArrayObj();
-
-
     // out of a lack of knowing where to put it, texture related stuff.
     GLuint tex0 = MakeTexture("resources/FROG.png");
     GLuint tex1 = MakeTexture("resources/Frog2.jpg");
@@ -59,37 +54,7 @@ bool setup( GLuint* VertexArrayObject, GLFWwindow** window)
 }
 
 
-unsigned int SetupVertexArrayObj()
-{
-    // A vertex array object stores all of the vertex attribute pointers...
-    // As well as vertex buffer objects.
-    // Basically, it keeps track some renderable object's data and the format it should be put into the vertex shader.
 
-
-    unsigned int VAO;
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO); // binding the VAO means any attribute pointers/buffer objects will be written to it.
-
-    // shove the data in here
-    unsigned int VertexBufferObject;
-    glGenBuffers(1, &VertexBufferObject);
-    glBindBuffer(GL_ARRAY_BUFFER, VertexBufferObject); //assign VectexBufferObject as an array buffer (of which there can only be one?)
-
-    // get data
-    int numVerticies = 0;
-    Vertex* data = Vertex::makeVerticies(numPoints, &numVerticies);
-    // std::cout<<(void*)(&(data[0].x))-(void*)(&data[0])<<"\n";
-    std::cout<<(offsetof(Vertex, angle))<<"\n";
-    glBufferData(GL_ARRAY_BUFFER, numVerticies*sizeof(Vertex), data, GL_STATIC_DRAW);
-    free(data);
-
-
-    Vertex::setVertexAttributes();
-
-    return VAO;
-
-
-}
 
 GLuint MakeTexture(const char *path)
 {
