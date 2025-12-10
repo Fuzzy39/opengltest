@@ -33,7 +33,7 @@ Disk::Disk(int sides, int textures)
     this->textures = textures;
 
     // initialize shaders
-    shader = new Shader("shaders/vertex.glsl", "shaders/fragment.glsl");
+    shader = new Shader("shaders/disk/vertex.glsl", "shaders/disk/fragment.glsl");
 
     vertexArrayObject = setupVAO();
     // do more things... probably.
