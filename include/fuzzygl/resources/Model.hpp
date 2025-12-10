@@ -3,15 +3,29 @@
 #include <fuzzygl/resources/Shader.hpp>
 
 
+// for all intents and purposes, this is a cube.
+// Eventually it'll be replaced with a more abstract class.
 class Model
 {
 private:
-    Shader shader;
+    struct Vertex
+    {
+      glm::vec3 vertex;
+      glm::vec2 textureVert;  
+
+      Vertex(glm::vec3 vert, glm::vec2 texVert);
+    };
+
+private:
+    std::unique_ptr<Shader> shader;
     GLuint vertexArrayObject;
 public:
     Model();
     Shader& getShader();
     GLuint getVAO();
+
+private:
+    void setVertexAttributes();
 };
 
 

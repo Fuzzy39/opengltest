@@ -7,7 +7,7 @@
 class ResourceManager
 {
 private:
-    std::vector<unique_ptr<Model>> models;
+    std::vector<std::unique_ptr<Model>> models;
   
 
 private:

@@ -28,6 +28,9 @@ ResourceManager::ResourceManager()
     glBindTexture(GL_TEXTURE_2D, tex0);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, tex1);
+
+    // initialize our (only) model
+    models.push_back(std::unique_ptr<Model>(new Model()));
 }
 
 Model& ResourceManager::getModel(int index)
