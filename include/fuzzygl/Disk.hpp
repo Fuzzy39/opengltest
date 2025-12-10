@@ -1,8 +1,7 @@
 #pragma once
-#include <glad/gl.h>
-#include <GLFW/glfw3.h>
+#include <common_includes.hpp>
+#include <fuzzygl/resources/Shader.hpp>
 
-#include <Shader.hpp>
 
 
 

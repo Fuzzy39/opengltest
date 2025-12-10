@@ -1,8 +1,5 @@
-#include "glTest.hpp"
-#include "Vertex.hpp"   
-// stb image
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb/stb_image.h>
+#include <fuzzygl/glTest.hpp>
+
 
 
 
@@ -39,52 +36,8 @@ bool setup(GLFWwindow** window)
 
 
     // out of a lack of knowing where to put it, texture related stuff.
-    GLuint tex0 = MakeTexture("resources/FROG.png");
-    GLuint tex1 = MakeTexture("resources/Frog2.jpg");
-    if(tex0==-1 ||tex1==-1)
-    {
-        return false;
-    }
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, tex0);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, tex1);
+  
     return true;
 }
 
 
-
-
-GLuint MakeTexture(const char *path)
-{
-    int width, height, nrChannels;
-    unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 4);
-    if (data == NULL)
-    {
-        std::cout << "ERROR::RESOURCE: Couldn't open the frog image. Reason: " << stbi_failure_reason();
-        return -1;
-    }
-
-
-    unsigned int texture;
-    glGenTextures(1, &texture); 
-    
-    // wraping
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-    // generate a texture from an image.            
-
-    glGenerateMipmap(GL_TEXTURE_2D);
-    stbi_image_free(data);
-
-   
-    return texture;
-}

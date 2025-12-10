@@ -1,5 +1,5 @@
-#include "glTest.hpp"
-#include <Disk.hpp>
+#include <fuzzygl/glTest.hpp>
+#include <fuzzygl/Disk.hpp>
 
 
 int  main(int argc, char** argv)

@@ -1,7 +1,5 @@
-#include <Shader.hpp>
-#include <iostream>
-#include <fstream> 
-#include <exception>
+#include <fuzzygl/resources/Shader.hpp>
+
 
 Shader::Shader(const std::string &vertexPath, const std::string &fragmentPath)
 {

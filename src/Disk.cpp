@@ -1,5 +1,4 @@
-#include "glTest.hpp"
-#include "Disk.hpp"
+#include <fuzzygl/Disk.hpp>
 
 
 Disk::Vertex::Vertex(glm::vec3 vert, float angle, glm::vec2 textureVert)
