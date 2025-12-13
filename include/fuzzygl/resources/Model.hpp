@@ -20,12 +20,17 @@ private:
     std::unique_ptr<Shader> shader;
     GLuint vertexArrayObject;
     int numVertices;
+    glm::vec3 center;
 
 public:
     Model();
     Shader& getShader();
     GLuint getVAO();
     int getNumVertices();
+
+    /// @brief Get the center of the model.
+    /// @return The average of all vertices.
+    glm::vec3 getCenter();
 
 private:
     void setVertexAttributes();

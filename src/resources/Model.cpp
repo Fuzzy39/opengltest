@@ -14,7 +14,6 @@ Model::Model()
     shader = std::unique_ptr<Shader>(sh);
 
     // setup the VAO
-
     Vertex verts[] = {
         // bottom
         Vertex(glm::vec3(0,0,0), glm::vec2(0,0)),
@@ -23,17 +22,27 @@ Model::Model()
 
         Vertex(glm::vec3(0,0,0), glm::vec2(0,0)),
         Vertex(glm::vec3(1,0,0), glm::vec2(1,0)),
-        Vertex(glm::vec3(.5,.5/sqrt(3),-1.5f), glm::vec2(1,1)),
+        Vertex(glm::vec3(.5,.5/sqrt(3),-.75f), glm::vec2(1,1)),
 
         Vertex(glm::vec3(0,0,0), glm::vec2(0,0)),
         Vertex(glm::vec3(.5,sqrt(3)/2,0), glm::vec2(1,0)),
-        Vertex(glm::vec3(.5,.5/sqrt(3),-1.5f), glm::vec2(1,1)),
+        Vertex(glm::vec3(.5,.5/sqrt(3),-.75f), glm::vec2(1,1)),
 
         Vertex(glm::vec3(1,0,0), glm::vec2(0,0)),
         Vertex(glm::vec3(.5,sqrt(3)/2,0), glm::vec2(1,0)),
-        Vertex(glm::vec3(.5,.5/sqrt(3),-1.5f), glm::vec2(1,1)),
+        Vertex(glm::vec3(.5,.5/sqrt(3),-.75f), glm::vec2(1,1)),
     };
     numVertices = sizeof(verts)/sizeof(Vertex);
+
+    // calculate center.
+    center = glm::vec3(0);
+    for(int i = 0; i<numVertices; i++)
+    {
+        center+= verts[i].vertex;
+    }
+    center *= (1.0f/numVertices);
+
+
     
     glGenVertexArrays(1, &vertexArrayObject);
     glBindVertexArray(vertexArrayObject); // binding the VAO means any attribute pointers/buffer objects will be written to it.
@@ -63,6 +72,11 @@ GLuint Model::getVAO()
 int Model::getNumVertices()
 {
     return numVertices;
+}
+
+glm::vec3 Model::getCenter()
+{
+    return center;
 }
 
 void Model::setVertexAttributes()
