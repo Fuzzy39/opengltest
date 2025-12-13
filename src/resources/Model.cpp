@@ -1,4 +1,5 @@
 #include <fuzzygl/resources/Model.hpp>
+#include "Model.hpp"
 
 Model::Vertex::Vertex(glm::vec3 vert, glm::vec2 texVert)
 {
@@ -14,7 +15,7 @@ Model::Model()
     shader = std::unique_ptr<Shader>(sh);
 
     // setup the VAO
-    
+
     Vertex verts[] = {
         // bottom
         Vertex(glm::vec3(0,0,0), glm::vec2(0,0)),
@@ -33,7 +34,7 @@ Model::Model()
         Vertex(glm::vec3(.5,sqrt(3),0), glm::vec2(1,0)),
         Vertex(glm::vec3(.5,sqrt(3)/2.0f,1.5f), glm::vec2(1,1)),
     };
-
+    numVertexes = sizeof(verts)/sizeof(Vertex);
     
     glGenVertexArrays(1, &vertexArrayObject);
     glBindVertexArray(vertexArrayObject); // binding the VAO means any attribute pointers/buffer objects will be written to it.
@@ -60,7 +61,10 @@ GLuint Model::getVAO()
     return vertexArrayObject;
 }
 
-
+int Model::getNumVertices()
+{
+    return numVertices;
+}
 
 void Model::setVertexAttributes()
 {

@@ -1,4 +1,5 @@
 #include <fuzzygl/resources/Shader.hpp>
+#include "Shader.hpp"
 
 
 Shader::Shader(const std::string &vertexPath, const std::string &fragmentPath)
@@ -158,4 +159,11 @@ void Shader::setFloat(const std::string &name, float value) const
     int uniformLocation = glGetUniformLocation(handle, name.c_str());
     glUseProgram(handle);
     glUniform1f(uniformLocation, value);
+}
+
+void Shader::setMat4(const std::string &name, glm::mat4 value) const
+{
+    GLuint uniformLocation = glGetUniformLocation(handle, name.c_str());
+    glUseProgram(handle);
+    glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(value));
 }

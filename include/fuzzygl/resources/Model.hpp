@@ -19,10 +19,13 @@ private:
 private:
     std::unique_ptr<Shader> shader;
     GLuint vertexArrayObject;
+    int numVertices;
+
 public:
     Model();
     Shader& getShader();
     GLuint getVAO();
+    int getNumVertices();
 
 private:
     void setVertexAttributes();
