@@ -24,7 +24,7 @@ void main()
     texPos = inTexPos*(((texMax-1)*((cos(texSpeed*time+M_PI)+1)/2))+1);
 
    
-    gl_Position = transform * vec4(aPos, 1.0f);
+    gl_Position =  transform*vec4(aPos, 1.0f);
     //gl_Position = vec4(cos(-.261*time+theta)*length(aPos), sin(-.773*time+theta)*length(aPos), aPos.z, 1.0);
     
     

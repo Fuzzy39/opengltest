@@ -1,5 +1,4 @@
 #include <fuzzygl/resources/Model.hpp>
-#include "Model.hpp"
 
 Model::Vertex::Vertex(glm::vec3 vert, glm::vec2 texVert)
 {
@@ -20,21 +19,21 @@ Model::Model()
         // bottom
         Vertex(glm::vec3(0,0,0), glm::vec2(0,0)),
         Vertex(glm::vec3(1,0,0), glm::vec2(1,0)),
-        Vertex(glm::vec3(.5,sqrt(3),0), glm::vec2(1,1)),
+        Vertex(glm::vec3(.5,sqrt(3)/2,0), glm::vec2(1,1)),
 
         Vertex(glm::vec3(0,0,0), glm::vec2(0,0)),
         Vertex(glm::vec3(1,0,0), glm::vec2(1,0)),
-        Vertex(glm::vec3(.5,sqrt(3)/2.0f,1.5f), glm::vec2(1,1)),
+        Vertex(glm::vec3(.5,.5/sqrt(3),-1.5f), glm::vec2(1,1)),
 
         Vertex(glm::vec3(0,0,0), glm::vec2(0,0)),
-        Vertex(glm::vec3(.5,sqrt(3),0), glm::vec2(1,0)),
-        Vertex(glm::vec3(.5,sqrt(3)/2.0f,1.5f), glm::vec2(1,1)),
+        Vertex(glm::vec3(.5,sqrt(3)/2,0), glm::vec2(1,0)),
+        Vertex(glm::vec3(.5,.5/sqrt(3),-1.5f), glm::vec2(1,1)),
 
         Vertex(glm::vec3(1,0,0), glm::vec2(0,0)),
-        Vertex(glm::vec3(.5,sqrt(3),0), glm::vec2(1,0)),
-        Vertex(glm::vec3(.5,sqrt(3)/2.0f,1.5f), glm::vec2(1,1)),
+        Vertex(glm::vec3(.5,sqrt(3)/2,0), glm::vec2(1,0)),
+        Vertex(glm::vec3(.5,.5/sqrt(3),-1.5f), glm::vec2(1,1)),
     };
-    numVertexes = sizeof(verts)/sizeof(Vertex);
+    numVertices = sizeof(verts)/sizeof(Vertex);
     
     glGenVertexArrays(1, &vertexArrayObject);
     glBindVertexArray(vertexArrayObject); // binding the VAO means any attribute pointers/buffer objects will be written to it.

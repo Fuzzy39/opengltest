@@ -3,7 +3,10 @@ cmake_minimum_required(VERSION 3.28)
 project(openGLTest LANGUAGES CXX C)
 
 
-add_executable(gltest "src/gl.c" "src/main.cpp" "src/Disk.cpp" "src/setup.cpp" "src/Shader.cpp")
+add_executable(gltest "src/gl.c" "src/main.cpp" "src/Disk.cpp" "src/setup.cpp" 
+    "src/resources/Shader.cpp" "src/resources/Model.cpp" "src/resources/ResourceManager.cpp"
+    "src/world/RenderObject.cpp" "src/world/World.cpp"
+)
 target_include_directories(gltest PUBLIC "include")
 
 add_custom_command(

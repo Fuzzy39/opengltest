@@ -35,7 +35,7 @@ ResourceManager::ResourceManager()
 
 Model& ResourceManager::getModel(int index)
 {
-    return models[index];
+    return *models[index];
 }
 
 

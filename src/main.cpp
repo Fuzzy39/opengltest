@@ -1,5 +1,7 @@
 #include <fuzzygl/glTest.hpp>
 #include <fuzzygl/Disk.hpp>
+#include <fuzzygl/resources/ResourceManager.hpp>
+#include <fuzzygl/world/World.hpp>
 
 
 int  main(int argc, char** argv)
@@ -13,6 +15,7 @@ int  main(int argc, char** argv)
     std::cout << "Hello!\n";
    
     Disk* disk = nullptr;
+    World* world = nullptr;
     GLFWwindow* window;
  
  
@@ -25,6 +28,9 @@ int  main(int argc, char** argv)
     try
     {
         // disk!
+        
+        ResourceManager::instance();
+        world = new World();
         disk = new Disk(sides, textures);
     }
     catch(std::exception e)
@@ -45,6 +51,7 @@ int  main(int argc, char** argv)
 
         disk->setTime( glfwGetTime()/period);
         disk->draw();
+        world->draw();
 
         glfwSwapBuffers(window);
         glfwPollEvents();    

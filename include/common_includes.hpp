@@ -1,6 +1,7 @@
 #pragma once
 // std library
 #include <iostream>
+#include <vector>
 #include <memory>
 #define _USE_MATH_DEFINES
 #include <math.h>

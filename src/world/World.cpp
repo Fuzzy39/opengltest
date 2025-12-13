@@ -4,9 +4,10 @@
 World::World()
 {
     // code assumes model starts at origin and stays in the first octant
-    glm::vec3 origin = glm::vec3(0,0,1);
+    glm::vec3 origin = glm::vec3(0,0,0);
     glm::vec3 unitSize = glm::vec3(1,1,1);
-    glm::vec3 gridSize = glm::vec3(2,2,1);
+    float scale = .5f;
+    glm::vec3 gridSize = glm::vec3(3,3,1);
 
     int numObjects = gridSize.x*gridSize.y*gridSize.z;
     float deltaRotation = (2.0f*M_PI)/numObjects;
@@ -16,7 +17,7 @@ World::World()
         unitSize.y*gridSize.y,
         unitSize.z*gridSize.z
     );
-    glm::vec3 start = .5f*size+unitSize+glm::vec3(-unitSize.x, 0, 0);
+    glm::vec3 start = -.5f*size+origin;//-glm::vec3(unitSize.x, unitSize.y, 0);
     Model& m = ResourceManager::instance().getModel(0);
     
     for(int x = 0; x<gridSize.x; x++)   
@@ -28,20 +29,30 @@ World::World()
                 // create the object
                 RenderObject* obj = new RenderObject(m);
                 objects.push_back(std::unique_ptr<RenderObject>(obj));
+                int i = z+y*gridSize.z+x*gridSize.y*gridSize.z;
                 
                 // rotate it
-                glm::vec3 axis = glm::vec3(sin(deltaRotation),1,0);
-                axis = axis/glm::length(axis);
-                obj->worldPos = glm::rotate(obj->worldPos, deltaRotation, axis);
+                // glm::vec3 axis = glm::vec3(sin(i*deltaRotation),1,0);
+                // axis = axis/glm::length(axis);
+                //obj->worldPos=glm::translate(obj->worldPos, -.5f*unitSize);
+                glm::vec3 axis =  glm::vec3(0,0,1);
+                obj->worldPos = glm::rotate(obj->worldPos, i*deltaRotation, axis);
+                //obj->worldPos=glm::translate(obj->worldPos, .5f*unitSize);
+
+                //scale it
+                obj->worldPos = glm::scale(obj->worldPos, glm::vec3(scale));
+
+            
 
                 //translate it
-                glm::translate(obj->worldPos, start + glm::vec3(x*unitSize.x,y*unitSize.y,z*unitSize.z));
+                glm::vec3 pos = start + glm::vec3(x*unitSize.x,y*unitSize.y,z*unitSize.z);
+                std::cout<< "x: "<<pos.x<<" y: "<<pos.y<<" z: "<<pos.z<<"\n";
+                obj->worldPos=glm::translate(obj->worldPos, pos);
             } 
         } 
     } 
 
 }
-
 void World::draw()
 {
     for(const std::unique_ptr<RenderObject>& object: objects) 
