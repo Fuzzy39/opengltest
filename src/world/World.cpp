@@ -5,10 +5,10 @@ World::World()
 {
     // code assumes model starts at origin and stays in the first octant
     glm::vec3 origin = glm::vec3(0,0,0);
-    glm::vec3 unitSize = glm::vec3(.8f);
+    glm::vec3 unitSize = glm::vec3(.7f);
     float scale = .5f;
     //unitSize = scale* unitSize;
-    glm::vec3 gridSize = glm::vec3(3,3,1);
+    glm::vec3 gridSize = glm::vec3(3,3,2);
 
     int numObjects = gridSize.x*gridSize.y*gridSize.z;
     float deltaRotation = (2.0f*M_PI)/numObjects;
@@ -25,7 +25,7 @@ World::World()
     {
         for(int y = 0; y<gridSize.y; y++)   
         {
-            for(int z = 0; z<gridSize.z; z++)   
+            for(int z = gridSize.z-1; z>=0; z--)   
             {
                 // create the object
                 RenderObject* obj = new RenderObject(m);
@@ -57,11 +57,13 @@ World::World()
 void World::draw()
 {
     float period = 10.0f;
-
+    float incrementBy = 1.0f/objects.size();
+    float i = 0;
     for(const std::unique_ptr<RenderObject>& object: objects) 
     {
-        object->setTime(glfwGetTime()/period);
+        object->setTime(glfwGetTime()*i/period + i*incrementBy);
         object->draw();
+        i++;
     }
 }
 

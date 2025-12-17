@@ -63,7 +63,7 @@ void RenderObject::draw()
  void RenderObject::setTime(float time)
  {
     resetRotation();
-    rotateBy(time*2*M_PI, glm::vec3(0,0,1));
+    rotateBy(time*2*M_PI, glm::vec3(0,.4,1));
  }
 
  glm::mat4 RenderObject::getModelMat()
