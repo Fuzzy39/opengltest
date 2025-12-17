@@ -61,6 +61,9 @@ void RenderObject::draw()
 
  void RenderObject::setTime(float time)
  {
+
+    model.getShader().setFloat("time", time);
+
     resetRotation();
     rotateBy(time*2*M_PI, glm::vec3(1, 0,0));
  }
