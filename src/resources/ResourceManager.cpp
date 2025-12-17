@@ -1,10 +1,10 @@
-#include <Fuzzygl/resources/ResourceManager.hpp>
+#include <fuzzygl/resources/ResourceManager.hpp>
 
 // stb image
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
-
+static ResourceManager* _instance = nullptr;
 
 ResourceManager& ResourceManager::instance()
 {
@@ -16,6 +16,7 @@ ResourceManager& ResourceManager::instance()
     // this feels like it'd cause a leak...
     _instance = new ResourceManager();
     // oh well, I guess?
+    return *_instance;
 }
 
 ResourceManager::ResourceManager()
@@ -23,11 +24,14 @@ ResourceManager::ResourceManager()
     // do things...
     GLuint tex0 = makeTexture("resources/FROG.png");
     GLuint tex1 = makeTexture("resources/Frog2.jpg");
+    GLuint tex2 = makeTexture("resources/greg.jpg");
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, tex0);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, tex1);
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, tex2);
 
     // initialize our (only) model
     models.push_back(std::unique_ptr<Model>(new Model()));
@@ -47,7 +51,7 @@ GLuint ResourceManager::makeTexture(const char *path)
     unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 4);
     if (data == NULL)
     {
-        std::cout << "ERROR::RESOURCE: Couldn't load the texture at '"<<*path<<"' Reason: " << stbi_failure_reason();
+        std::cout << "ERROR::RESOURCE: Couldn't load the texture at '"<<path<<"' Reason: " << stbi_failure_reason();
         throw std::exception();
     }
 

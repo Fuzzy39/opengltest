@@ -19,7 +19,7 @@ void main()
     gl_Position = modelMat * vec4(aPos, 1.0f);
    
     float bright =1-( (gl_Position.z+1)/2.0f);
-    color = vec4(.8, bright, bright, 1.0);
+    color = vec4(bright, bright, bright, 1.0);
    
    
 }
