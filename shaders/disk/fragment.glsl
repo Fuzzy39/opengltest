@@ -15,4 +15,7 @@ void main()
     float side = sign(transform*vec4(0,0,1,1)).z;
 
     FragColor = mix(texture(tex2, texPos), texture(tex, texPos), ((side*cos(0))+1)/2 )*color; 
+
+    // make it in the background!
+    gl_FragDepth = .99999;
 }

@@ -3,6 +3,7 @@
 #include <fuzzygl/resources/ResourceManager.hpp>
 #include <fuzzygl/world/World.hpp>
 
+static World* world = nullptr;
 
 int  main(int argc, char** argv)
 {
@@ -15,7 +16,7 @@ int  main(int argc, char** argv)
     std::cout << "Hello!\n";
    
     Disk* disk = nullptr;
-    World* world = nullptr;
+
     GLFWwindow* window;
  
  
@@ -30,7 +31,15 @@ int  main(int argc, char** argv)
         // disk!
         
         ResourceManager::instance();
-        world = new World();
+
+        // calculate the aspect ratio
+        int width, height;
+        glfwGetWindowSize(window, &width, &height);
+        float aspectRatio = ((float)width)/height;
+
+        world = new World(aspectRatio);
+
+
         disk = new Disk(sides, textures);
     }
     catch(std::exception e)
@@ -45,7 +54,7 @@ int  main(int argc, char** argv)
 
         // clear the buffer with a color.
         glClearColor(.2f, .2f, .3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         
 
@@ -67,6 +76,9 @@ int  main(int argc, char** argv)
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
+    float aspectRatio = ((float)width)/height;
+    world->updateAspectRatio(aspectRatio);
+
     glViewport(0, 0, width, height);
 }
 

@@ -132,7 +132,6 @@ GLuint Disk::setupVAO()
     // get data
     int numVerticies = 0;
     Vertex* data = makeVertices(sides, textures, &numVerticies);
-    std::cout<<sides;
    
     glBufferData(GL_ARRAY_BUFFER, numVerticies*sizeof(Vertex), data, GL_STATIC_DRAW);
     free(data);

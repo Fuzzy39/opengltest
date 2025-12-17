@@ -1,14 +1,55 @@
 #include <fuzzygl/world/World.hpp>
 #include <fuzzygl/resources/ResourceManager.hpp>
 
-World::World()
+World::World(float ratio)
+{
+    // perspective matrix
+    updateAspectRatio(ratio);
+    
+    // make objects and have a grand time or whatever
+    setupWorld();
+
+}
+
+void World::updateAspectRatio(float ratio)
+{
+    perspective = glm::perspective(glm::radians(45.0f), ratio, 0.1f, 100.0f);
+}
+
+void World::draw()
+{
+    float period = 10.0f;
+    float incrementBy = 1.0f/objects.size();
+    float i = 0;
+
+    // set the perspective matrix appropriately for all models.
+    ResourceManager::instance().setShaderMatricies("perspectiveMat", perspective);
+    
+    // draw objects
+    for(const std::unique_ptr<RenderObject>& object: objects) 
+    {
+        object->setTime(glfwGetTime()*(i*.7f)/period + i*incrementBy);
+        
+        object->draw();
+        i++;
+    }
+}
+
+std::vector<std::unique_ptr<RenderObject>>& World::getObjects()
+{
+    return objects;
+}
+
+
+
+void World::setupWorld()
 {
     // code assumes model starts at origin and stays in the first octant
-    glm::vec3 origin = glm::vec3(0,0,0);
+    glm::vec3 origin = glm::vec3(0,0,-3.0f);
     glm::vec3 unitSize = glm::vec3(.7f);
     float scale = .5f;
     //unitSize = scale* unitSize;
-    glm::vec3 gridSize = glm::vec3(3,3,2);
+    glm::vec3 gridSize = glm::vec3(3,3,3);
 
     int numObjects = gridSize.x*gridSize.y*gridSize.z;
     float deltaRotation = (2.0f*M_PI)/numObjects;
@@ -52,22 +93,4 @@ World::World()
             } 
         } 
     } 
-
-}
-void World::draw()
-{
-    float period = 10.0f;
-    float incrementBy = 1.0f/objects.size();
-    float i = 0;
-    for(const std::unique_ptr<RenderObject>& object: objects) 
-    {
-        object->setTime(glfwGetTime()*i/period + i*incrementBy);
-        object->draw();
-        i++;
-    }
-}
-
-std::vector<std::unique_ptr<RenderObject>>& World::getObjects()
-{
-    return objects;
 }

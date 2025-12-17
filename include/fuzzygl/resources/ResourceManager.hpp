@@ -16,4 +16,5 @@ private:
 public:
     static ResourceManager& instance();
     Model& getModel(int index);
+    void setShaderMatricies(const std::string name, glm::mat4 value );
 };

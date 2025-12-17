@@ -26,17 +26,14 @@ glm::vec3 RenderObject::translateBy(glm::vec3 delta)
 // Rotation
 void RenderObject::resetRotation()
 {
-    rotation = glm::vec3(1,0,0);
+    rotation = glm::mat4(1);
 }
 
 glm::mat4 RenderObject::rotateBy(float radians, glm::vec3 axis)
 {
 
-    glm::mat4 toReturn = glm::rotate(glm::mat4(1), radians, axis/glm::length(axis));
-    glm::vec4 rot = toReturn*glm::vec4(rotation, 1);
-    rotation = glm::vec3(rot.x, rot.y, rot.z);
-
-    return toReturn;
+    rotation = glm::rotate(rotation, radians, axis/glm::length(axis));
+    return rotation;
 }
 
 // Scale
@@ -65,7 +62,7 @@ void RenderObject::draw()
  void RenderObject::setTime(float time)
  {
     resetRotation();
-    rotateBy(time*2*M_PI, glm::vec3(0,.4,1));
+    rotateBy(time*2*M_PI, glm::vec3(1, 0,0));
  }
 
  glm::mat4 RenderObject::getModelMat()
@@ -86,19 +83,9 @@ void RenderObject::draw()
     // recover the rotation parameters
     // the vector rotation is on the unit sphere and represents what rotating (1,0,0) should look like.
     // cross product is perpendicular to both vectors, should be the axis to rotate around.
-    glm::vec3 axis = glm::cross(glm::vec3(1,0,0), rotation);
+    //glm::vec3 axis = glm::cross(glm::vec3(1,0,0), rotation);
 
-    // magnitude of cross product should be product of magnitudes (1*1)
-    // times sin(theta). Get theta:
-    //float theta = asin(glm::length(axis));
-    float theta = glm::orientedAngle(rotation, glm::vec3(1,0,0), glm::vec3(1,0,0));
-
-    // rotation axis needs to be a unit vector.
-    axis = axis*(1.0f/glm::length(axis));
-    // std::cout<< "ROT x: "<<rotation.x<<" y: "<<rotation.y<<" z: "<<rotation.z<<"\n";
-    // std::cout<< "x: "<<axis.x<<" y: "<<axis.y<<" z: "<<axis.z<<" theta: "<<theta<<"\n\n";
-    // do rotation if we can...
-    if(axis != glm::vec3(0)) toReturn = glm::rotate(toReturn, theta, axis);
+    toReturn = toReturn*rotation;
 
     toReturn = glm::translate(toReturn, -model.getCenter());
 

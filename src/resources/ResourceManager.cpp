@@ -42,8 +42,13 @@ Model& ResourceManager::getModel(int index)
     return *models[index];
 }
 
-
-
+void ResourceManager::setShaderMatricies(const std::string name, glm::mat4 value)
+{
+    for(const std::unique_ptr<Model>& model : models)
+    {
+        model->getShader().setMat4(name, value);
+    }
+}
 
 GLuint ResourceManager::makeTexture(const char *path)
 {

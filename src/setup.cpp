@@ -36,7 +36,10 @@ bool setup(GLFWwindow** window)
 
 
     // out of a lack of knowing where to put it, texture related stuff.
-  
+    //glDepthRange(-1,1);
+    //glDepthFunc(GL_NOTEQUAL);
+    glEnable (GL_DEPTH_TEST);
+
     return true;
 }
 

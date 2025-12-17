@@ -6,6 +6,7 @@ layout (location = 1) in vec2 inTexPos;
 
 
 uniform mat4 modelMat;
+uniform mat4 perspectiveMat;
 
 out vec4 color;
 out vec2 texPos;
@@ -16,9 +17,10 @@ void main()
 
     texPos = inTexPos;
 
-    gl_Position = modelMat * vec4(aPos, 1.0f);
+    gl_Position = perspectiveMat * modelMat * vec4(aPos, 1.0f);
    
-    float bright =1-( (gl_Position.z+1)/2.0f);
+    float min = 5;
+    float bright =1-(gl_Position.z/min);
     color = vec4(bright, bright, bright, 1.0);
    
    
