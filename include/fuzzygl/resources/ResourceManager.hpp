@@ -1,6 +1,6 @@
 #pragma once
 #include <common_includes.hpp>
-#include <Fuzzygl/resources/Model.hpp>
+#include <fuzzygl/resources/Model.hpp>
 
 /// @brief Resource Manager is a singleton class that manages application wide resources,
 // such as 3d models and textures.
@@ -17,5 +17,3 @@ public:
     static ResourceManager& instance();
     Model& getModel(int index);
 };
-
-static ResourceManager* _instance = nullptr;

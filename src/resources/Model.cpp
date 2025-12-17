@@ -18,19 +18,19 @@ Model::Model()
         // bottom
         Vertex(glm::vec3(0,0,0), glm::vec2(0,0)),
         Vertex(glm::vec3(1,0,0), glm::vec2(1,0)),
-        Vertex(glm::vec3(.5,sqrt(3)/2,0), glm::vec2(1,1)),
+        Vertex(glm::vec3(.5,sqrt(3)/2,0), glm::vec2(.5,1)),
 
         Vertex(glm::vec3(0,0,0), glm::vec2(0,0)),
         Vertex(glm::vec3(1,0,0), glm::vec2(1,0)),
-        Vertex(glm::vec3(.5,.5/sqrt(3),-.75f), glm::vec2(1,1)),
+        Vertex(glm::vec3(.5,.5/sqrt(3),-.75f), glm::vec2(.5,1)),
 
         Vertex(glm::vec3(0,0,0), glm::vec2(0,0)),
         Vertex(glm::vec3(.5,sqrt(3)/2,0), glm::vec2(1,0)),
-        Vertex(glm::vec3(.5,.5/sqrt(3),-.75f), glm::vec2(1,1)),
+        Vertex(glm::vec3(.5,.5/sqrt(3),-.75f), glm::vec2(.5,1)),
 
         Vertex(glm::vec3(1,0,0), glm::vec2(0,0)),
         Vertex(glm::vec3(.5,sqrt(3)/2,0), glm::vec2(1,0)),
-        Vertex(glm::vec3(.5,.5/sqrt(3),-.75f), glm::vec2(1,1)),
+        Vertex(glm::vec3(.5,.5/sqrt(3),-.75f), glm::vec2(.5,1)),
     };
     numVertices = sizeof(verts)/sizeof(Vertex);
 

@@ -52,6 +52,8 @@ void RenderObject::setScale(glm::vec3 toSet)
 
 void RenderObject::draw()
 {
+    // maybe a bit of a hack. sue me.
+    model.getShader().setInt("tex", 2); 
     model.getShader().setMat4("modelMat", getModelMat());
     // Set the transform matrix...
 
@@ -63,7 +65,7 @@ void RenderObject::draw()
  void RenderObject::setTime(float time)
  {
     resetRotation();
-    rotateBy(time*2*M_PI, glm::vec3(0,0,1));
+    rotateBy(time*2*M_PI, glm::vec3(0,1,0));
  }
 
  glm::mat4 RenderObject::getModelMat()

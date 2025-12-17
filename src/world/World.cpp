@@ -1,5 +1,5 @@
 #include <fuzzygl/world/World.hpp>
-#include <fuzzygl/Resources/ResourceManager.hpp>
+#include <fuzzygl/resources/ResourceManager.hpp>
 
 World::World()
 {

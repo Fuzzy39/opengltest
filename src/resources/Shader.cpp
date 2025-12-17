@@ -20,14 +20,15 @@ Shader::Shader(const std::string &vertexPath, const std::string &fragmentPath)
 
     if(!compileShaders(vertexSource, fragmentSource))
     {
-        free(vertexSource);
-        free(fragmentSource);
+        delete vertexSource;
+        delete fragmentSource;
 
         throw std::exception();
+        return;
     }
 
-    free(vertexSource);
-    free(fragmentSource);
+    delete vertexSource;
+    delete fragmentSource;
 
 
 }
