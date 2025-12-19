@@ -51,7 +51,7 @@ public:
 
 private:
     // this is all setup
-    Vertex* makeVertices(int points, int textures, int* count); // returns an array of verticies number+1 in size
+    Vertex* makeVertices(int points, int* count); // returns an array of verticies number+1 in size
     void setVertexAttributes();
     GLuint setupVAO();
     

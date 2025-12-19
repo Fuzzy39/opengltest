@@ -5,14 +5,14 @@
 
 static World* world = nullptr;
 
-int  main(int argc, char** argv)
+int  main(void)
 {
     // config
     int sides = 100;
     int textures = 5;
     float period = 10.0f;
 
-    srand(time(NULL));   // Initialization, should only be called once.
+    srand((unsigned int)time(NULL));   // Initialization, should only be called once.
     std::cout << "Hello!\n";
    
     Disk* disk = nullptr;

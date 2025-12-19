@@ -88,7 +88,7 @@ void Disk::draw()
 
 // setup functions
 
-Disk::Vertex* Disk::makeVertices(int points, int textures, int* count)
+Disk::Vertex* Disk::makeVertices(int points, int* count)
 {
     if(points<=2) return nullptr;
 
@@ -131,7 +131,7 @@ GLuint Disk::setupVAO()
 
     // get data
     int numVerticies = 0;
-    Vertex* data = makeVertices(sides, textures, &numVerticies);
+    Vertex* data = makeVertices(sides, &numVerticies);
    
     glBufferData(GL_ARRAY_BUFFER, numVerticies*sizeof(Vertex), data, GL_STATIC_DRAW);
     free(data);

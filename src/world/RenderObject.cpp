@@ -20,7 +20,8 @@ void RenderObject::setTranslation(glm::vec3 toSet)
 
 glm::vec3 RenderObject::translateBy(glm::vec3 delta)
 {
-    return glm::vec3();
+    translation = translation + delta;
+    return translation;
 }
 
 // Rotation
