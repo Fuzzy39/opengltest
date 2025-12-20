@@ -54,8 +54,8 @@ void Camera::lookAt(glm::vec3 target)
     // matrix[1] = glm::vec4(basis[1], target[1]);
     // matrix[2] = glm::vec4(basis[0], target[2]);
     //matrix = rotate
-
-    matrix = glm::lookAt(-getPosition(), target, glm::vec3(0,1,0));
+    //std::cout<<getPosition().x<<", "<<getPosition().y<<", "<<getPosition().z<<"\n";
+    matrix = glm::lookAt(getPosition(), target, glm::vec3(0,1,0));
     update();
 }
 

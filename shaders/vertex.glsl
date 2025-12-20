@@ -27,7 +27,8 @@ void main()
     const float M_PI = 3.1415926535897932384626433832795;
     texPos = inTexPos;
 
-    gl_Position = perspectiveMat * viewMat * modelMat * vec4(aPos, 1.0f);
+//  
+    gl_Position = perspectiveMat * viewMat  * modelMat * vec4(aPos, 1.0f);
    
     float min = 5;
     float bright =1-(gl_Position.z/min);

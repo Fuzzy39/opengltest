@@ -6,7 +6,11 @@ World::World(float ratio)
     // perspective matrix
     updateAspectRatio(ratio);
     camera.setActive(true);
-   
+    camera.setPosition(glm::vec3(
+        0, 
+        0,
+        -5
+    ));
 
     // make objects and have a grand time or whatever
     setupWorld();
@@ -23,24 +27,25 @@ void World::draw()
     float period = 10.0f;
     float cameraPeriod = 2.0f;
     float incrementBy = 1.0f/objects.size();
-    float i = 0;
-    camera.setPosition(glm::vec3(
-        3*sin(glfwGetTime()/cameraPeriod), 
-        0,
-        -4
-    ));
+
+    // camera.setPosition(glm::vec3(
+    //     1*cos(glfwGetTime()/cameraPeriod), 
+    //     1*sin(glfwGetTime()/cameraPeriod),
+    //     -5
+    // ));
   
     //camera.pitch(.05);
-    camera.lookAt(glm::vec3(0));
+    //camera.lookAt(glm::vec3(0));
 
     // set the perspective matrix appropriately for all models.
     ResourceManager::instance().setShaderMatricies("perspectiveMat", perspective);
     
     // draw objects
+    float i = 0;
     for(const std::unique_ptr<RenderObject>& object: objects) 
     {
         object->setTime(glfwGetTime()*(i*.7f)/period + i*incrementBy);
-        
+        //object->setTime((i*.7f)/period + i*incrementBy);
         object->draw();
         i++;
     }
@@ -77,7 +82,7 @@ void World::setupWorld()
     {
         for(int y = 0; y<gridSize.y; y++)   
         {
-            for(int z = (int)gridSize.z-1; z>=0; z--)   
+            for(int z = 0; z<gridSize.z; z++)   
             {
                 // create the object
                 RenderObject* obj = new RenderObject(m);
@@ -93,7 +98,7 @@ void World::setupWorld()
                 //obj->worldPos=glm::translate(obj->worldPos, .5f*unitSize);
 
                 //scale it
-                obj->setScale(glm::vec3(scale));
+                obj->setScale(glm::vec3(scale)*((z+1)/gridSize.z));
 
             
 
