@@ -9,9 +9,9 @@ World::World(float ratio)
     camera.setPosition(glm::vec3(
         0, 
         0,
-        -5
+        5
     ));
-
+    //camera.pitch(-.1);
     // make objects and have a grand time or whatever
     setupWorld();
 
@@ -25,16 +25,17 @@ void World::updateAspectRatio(float ratio)
 void World::draw()
 {
     float period = 10.0f;
-    float cameraPeriod = 2.0f;
+    float cameraPeriod = .2f;
     float incrementBy = 1.0f/objects.size();
 
-    // camera.setPosition(glm::vec3(
-    //     1*cos(glfwGetTime()/cameraPeriod), 
-    //     1*sin(glfwGetTime()/cameraPeriod),
-    //     -5
-    // ));
+    camera.setPosition(glm::vec3(
+        0,//5*sin(glfwGetTime()/cameraPeriod), 
+        0,//3*sin(glfwGetTime()/cameraPeriod),
+        3 - 2 * sin(glfwGetTime()/cameraPeriod)
+   ));
   
-    //camera.pitch(.05);
+    camera.yaw(.01 * sin(glfwGetTime()/cameraPeriod));
+    camera.roll(.01 * sin(glfwGetTime()/cameraPeriod));
     //camera.lookAt(glm::vec3(0));
 
     // set the perspective matrix appropriately for all models.

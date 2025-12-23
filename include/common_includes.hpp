@@ -19,3 +19,4 @@
 // ooh, fun!
 #define GLM_ENABLE_EXPERIMENTAL 
 #include <glm/gtx/vector_angle.hpp>
+#include <glm/gtc/matrix_inverse.hpp>

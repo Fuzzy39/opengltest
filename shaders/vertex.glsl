@@ -27,11 +27,14 @@ void main()
     const float M_PI = 3.1415926535897932384626433832795;
     texPos = inTexPos;
 
-//  
+  
     gl_Position = perspectiveMat * viewMat  * modelMat * vec4(aPos, 1.0f);
    
-    float min = 5;
-    float bright =1-(gl_Position.z/min);
+    float maxBright = 2;
+    float minBright = 6;
+    
+    float bright =min(1-((gl_Position.z-maxBright)/(minBright-maxBright)),1);
+
     bright = bright*.5f;
     color = sinusoid(time);
     if(doDarkening)

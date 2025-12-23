@@ -12,15 +12,24 @@ Camera::Camera(glm::vec3 position)
 
 glm::vec3 Camera::getPosition()
 {
-    glm::vec4 col = matrix[3];
-    return glm::vec3(col);
+    glm::mat4 inv = glm::affineInverse(matrix);	
+
+    return inv * glm::vec4(0,0,0,1);
 }
 
 void Camera::setPosition(glm::vec3 position)
 {
-    matrix[3].x = position.x;
-    matrix[3].y = position.y;
-    matrix[3].z = position.z;
+    matrix[3].x = 0;
+    matrix[3].y = 0;
+    matrix[3].z = 0;
+
+    glm::mat4 translate = glm::mat4(1);
+    for(int i = 0; i<3; i++)
+    {
+        translate[3][i]= -position[i];
+    }
+    matrix = matrix * translate;
+
     update();
 }
 
@@ -61,10 +70,7 @@ void Camera::lookAt(glm::vec3 target)
 
 void Camera::pitch(float pitchRadians)
 {
-    glm::vec3 pos = getPosition();
-    translate(-pos);
-    matrix = glm::rotate(matrix, pitchRadians, glm::vec3(matrix[0]));
-    translate(pos);
+    matrix = glm::rotate(matrix, pitchRadians, glm::vec3(matrix[0]));   
     update();
 }
 
