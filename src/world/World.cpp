@@ -25,17 +25,20 @@ void World::updateAspectRatio(float ratio)
 void World::draw()
 {
     float period = 10.0f;
-    float cameraPeriod = .2f;
+    float cameraPeriod = 10.0f/(2*M_PI);
     float incrementBy = 1.0f/objects.size();
 
     camera.setPosition(glm::vec3(
-        0,//5*sin(glfwGetTime()/cameraPeriod), 
-        0,//3*sin(glfwGetTime()/cameraPeriod),
-        3 - 2 * sin(glfwGetTime()/cameraPeriod)
+        1*sin(2*glfwGetTime()/cameraPeriod), 
+        .2*cos(2*glfwGetTime()/cameraPeriod),
+        4 - 2 * sin(glfwGetTime()/cameraPeriod)
    ));
   
-    camera.yaw(.01 * sin(glfwGetTime()/cameraPeriod));
-    camera.roll(.01 * sin(glfwGetTime()/cameraPeriod));
+    camera.lookAt(glm::vec3(0));
+    camera.pitch(.5 * cos(glfwGetTime()/cameraPeriod));
+    camera.yaw(.5 * cos(2*glfwGetTime()/cameraPeriod));
+    camera.roll(.5 * cos(4*glfwGetTime()/cameraPeriod));
+
     //camera.lookAt(glm::vec3(0));
 
     // set the perspective matrix appropriately for all models.
@@ -45,7 +48,7 @@ void World::draw()
     float i = 0;
     for(const std::unique_ptr<RenderObject>& object: objects) 
     {
-        object->setTime(glfwGetTime()*(i*.7f)/period + i*incrementBy);
+        object->setTime(glfwGetTime()*(i*.01f)/period + i*incrementBy);
         //object->setTime((i*.7f)/period + i*incrementBy);
         object->draw();
         i++;
@@ -66,7 +69,7 @@ void World::setupWorld()
     glm::vec3 unitSize = glm::vec3(.7f);
     float scale = .5f;
     //unitSize = scale* unitSize;
-    glm::vec3 gridSize = glm::vec3(3,3,3);
+    glm::vec3 gridSize = glm::vec3(10,10,10);
 
     int numObjects = (int)(gridSize.x*gridSize.y*gridSize.z);
     float deltaRotation = (2.0f*M_PI)/numObjects;
@@ -105,7 +108,7 @@ void World::setupWorld()
 
                 //translate it
                 glm::vec3 pos = start + glm::vec3(x*unitSize.x,y*unitSize.y,z*unitSize.z);
-                std::cout<< "x: "<<pos.x<<" y: "<<pos.y<<" z: "<<pos.z<<"\n";
+                //std::cout<< "x: "<<pos.x<<" y: "<<pos.y<<" z: "<<pos.z<<"\n";
                 obj->setTranslation(pos);
             } 
         } 

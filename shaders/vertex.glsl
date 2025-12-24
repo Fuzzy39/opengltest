@@ -30,8 +30,8 @@ void main()
   
     gl_Position = perspectiveMat * viewMat  * modelMat * vec4(aPos, 1.0f);
    
-    float maxBright = 2;
-    float minBright = 6;
+    float maxBright = 5;
+    float minBright = 1;
     
     float bright =min(1-((gl_Position.z-maxBright)/(minBright-maxBright)),1);
 
