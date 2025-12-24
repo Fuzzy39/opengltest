@@ -95,10 +95,21 @@ void Camera::rotateAbout(float rotateRadians, glm::vec3 axis)
 void Camera::setActive(bool active)
 {
     this->active = active;
+    update();
 }
+
+bool Camera::isActive() { return active;}
 
 void Camera::update()
 {
     if(!active) return;
     ResourceManager::instance().setShaderMatricies("viewMat", matrix);
+}
+
+std::string Camera::toString()
+{
+
+    std::ostringstream buffer;
+    buffer << "Camera with pos " <<(getPosition().x)<<", " <<getPosition().y<<", "<<getPosition().z; 
+    return buffer.str();
 }

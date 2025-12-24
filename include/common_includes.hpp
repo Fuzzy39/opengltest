@@ -7,6 +7,7 @@
 #include <math.h>
 #include <fstream> 
 #include <exception>
+#include <sstream>
 
 
 // Opengl, GlFW, etc.

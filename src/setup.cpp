@@ -1,9 +1,5 @@
 #include <fuzzygl/glTest.hpp>
 
-
-
-
-
 bool setup(GLFWwindow** window)
 {
     glfwInit();
@@ -33,6 +29,7 @@ bool setup(GLFWwindow** window)
     // setup viewport
     glViewport(0, 0, 800, 800);
     glfwSetFramebufferSizeCallback(*window, framebuffer_size_callback);
+    glfwSetKeyCallback(*window, key_callback);
 
 
     // out of a lack of knowing where to put it, texture related stuff.

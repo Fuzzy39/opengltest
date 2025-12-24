@@ -7,13 +7,23 @@ class World
 {
 private:
     std::vector<std::unique_ptr<RenderObject>> objects;
-    Camera camera;
+    std::vector<std::unique_ptr<Camera>> cameras;
     glm::mat4 perspective;
 public:
     World(float ratio);
     void updateAspectRatio(float ratio);
     void draw();
     std::vector<std::unique_ptr<RenderObject>>& getObjects();
+
+    std::unique_ptr<Camera>& getCamera(int index);
+    void addCamera();
+    int getCameraCount();
+
+    Camera& activeCamera();
+    void setActiveCamera(int index);
+  
+
+
 
 private:
     void setupWorld();

@@ -5,12 +5,14 @@ World::World(float ratio)
 {
     // perspective matrix
     updateAspectRatio(ratio);
-    camera.setActive(true);
-    camera.setPosition(glm::vec3(
+    cameras.push_back(std::unique_ptr<Camera>(new Camera(glm::vec3(
         0, 
         0,
-        5
-    ));
+        5)
+    )));
+
+    setActiveCamera(0);
+  
     //camera.pitch(-.1);
     // make objects and have a grand time or whatever
     setupWorld();
@@ -25,19 +27,9 @@ void World::updateAspectRatio(float ratio)
 void World::draw()
 {
     float period = 10.0f;
-    float cameraPeriod = 10.0f/(2*M_PI);
     float incrementBy = 1.0f/objects.size();
 
-    camera.setPosition(glm::vec3(
-        1*sin(2*glfwGetTime()/cameraPeriod), 
-        .2*cos(2*glfwGetTime()/cameraPeriod),
-        4 - 2 * sin(glfwGetTime()/cameraPeriod)
-   ));
   
-    camera.lookAt(glm::vec3(0));
-    camera.pitch(.5 * cos(glfwGetTime()/cameraPeriod));
-    camera.yaw(.5 * cos(2*glfwGetTime()/cameraPeriod));
-    camera.roll(.5 * cos(4*glfwGetTime()/cameraPeriod));
 
     //camera.lookAt(glm::vec3(0));
 
@@ -59,6 +51,67 @@ std::vector<std::unique_ptr<RenderObject>>& World::getObjects()
 {
     return objects;
 }
+
+std::unique_ptr<Camera>& World::getCamera(int index)
+{
+    std::unique_ptr<Camera>& toRet = cameras[index];
+    activeCamera();
+    return toRet;
+}
+
+void World::addCamera()
+{
+    cameras.push_back(std::unique_ptr<Camera>(new Camera()));
+}
+
+int World::getCameraCount()
+{
+    return cameras.size();
+}
+
+Camera &World::activeCamera()
+{
+    Camera* toRet = nullptr;
+    for( const std::unique_ptr<Camera>& cam : cameras)
+    {
+        
+        if(cam->isActive())
+        {
+       
+            if(toRet!=nullptr)
+            {
+                std::cout<<"ERROR::WORLD::CAMERA_ERROR: Multiple active cameras.\n";
+                throw std::exception();   
+            }
+            toRet = &(*cam);
+        }
+
+    }
+
+    if(toRet==nullptr)
+    {
+        std::cout<<"ERROR::WORLD::CAMERA_ERROR: No active cameras.\n";
+        throw std::exception();   
+    }
+
+    return *toRet;
+}
+
+
+void World::setActiveCamera(int index)
+{  
+   
+    std::cout<<"Setting cam "<<index<<" as active.\n";
+
+    for(const std::unique_ptr<Camera>& cam : cameras)
+    {
+        cam->setActive(false);
+    }
+    cameras[index]->setActive(true);
+    // mostly just check that we've not exploded anything.
+    activeCamera();
+}
+
 
 
 

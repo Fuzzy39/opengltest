@@ -26,6 +26,9 @@ public:
    void rotateAbout(float rotateRadians, glm::vec3 axis);
 
    void setActive(bool active);
+   bool isActive();
+
+   std::string toString();
 
 private:
     void update();
