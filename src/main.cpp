@@ -44,8 +44,7 @@ int  main(void)
 
         world->addCamera();
         world->getCamera(2)->setBehavior(new ControllableBehavior());
-        world->getCamera(2)->setPosition(glm::vec3(8,8,8));
-        world->getCamera(2)->lookAt(glm::vec3(0,0,0));
+        world->getCamera(2)->setPosition(glm::vec3(0,0,8));
 
         disk = new Disk(sides, textures);
     }
@@ -58,6 +57,7 @@ int  main(void)
     while(!glfwWindowShouldClose(window))
     {
         handleInput(window);
+        mouseUpdate(window);
 
         // clear the buffer with a color.
         glClearColor(.3f, .3f, .4f, 1.0f);
@@ -66,11 +66,11 @@ int  main(void)
         
 
         disk->setTime( glfwGetTime()/period);
-       // disk->draw();
+        //disk->draw();
 
         // fiddle with the camera.
 
-        world->draw(window);
+        world->draw();
 
         glfwSwapBuffers(window);
         glfwPollEvents();    
@@ -113,3 +113,27 @@ void key_callback (GLFWwindow *window, int key, int scancode, int action, int mo
     }
 }
 
+void mouseUpdate(GLFWwindow* window)
+{
+    double xpos, ypos;
+    glfwGetCursorPos(window, &xpos, &ypos);
+    ResourceManager& rm = ResourceManager::instance();
+    if(rm.prevMousePos.x == -1 && rm.prevMousePos.y == -1)
+    {
+        rm.prevMousePos = glm::vec2(xpos, ypos);
+        rm.currMousePos = glm::vec2(xpos, ypos);
+        return;
+    }
+    // otherwise, calculate the delta.
+    rm.prevMousePos = rm.currMousePos;
+    rm.currMousePos = glm::vec2(xpos, ypos);
+
+    int width, height;
+    glfwGetWindowSize(window, &width, &height);
+
+    rm.relMousePos = glm::vec2(xpos/width, ypos/height);
+   
+    rm.deltaMousePos = rm.currMousePos - rm.prevMousePos;
+    
+ 
+}

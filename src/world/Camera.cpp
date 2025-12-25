@@ -71,33 +71,83 @@ void Camera::lookAt(glm::vec3 target)
 
 void Camera::pitch(float pitchRadians)
 {
+    glm::vec3 pos = getPosition();
+    matrix = glm::translate(matrix, pos);
     matrix = glm::rotate(matrix, pitchRadians, glm::vec3(matrix[0]));   
+    matrix = glm::translate(matrix, -pos);
     sendMatrix();
 }
 
+
+
+
 void Camera::yaw(float yawRadians)
 {
+    glm::vec3 pos = getPosition();
+    matrix = glm::translate(matrix, pos);
     matrix = glm::rotate(matrix, yawRadians, glm::vec3(matrix[1]));
+    matrix = glm::translate(matrix, -pos);
     sendMatrix();
 }
 
 void Camera::roll(float rollRadians)
 {
+    glm::vec3 pos = getPosition();
+    matrix = glm::translate(matrix, pos);
     matrix = glm::rotate(matrix, rollRadians, glm::vec3(matrix[2]));
+    matrix = glm::translate(matrix, -pos);
     sendMatrix();
 }
 
 void Camera::rotateAbout(float rotateRadians, glm::vec3 axis)
 {
-    matrix = glm::rotate(matrix, rotateRadians, axis);
+    glm::vec3 pos = getPosition();
+    matrix = glm::translate(matrix, pos);
+    matrix = glm::rotate(matrix, rotateRadians, glm::normalize(axis));
+    matrix = glm::translate(matrix, -pos);
     sendMatrix();
 }
 
 
 
+
+void Camera::translateRelative(glm::vec3 translateBy)
+{
+    glm::mat3 basis = glm::mat3(matrix);
+    
+    translate(
+        -glm::row(basis, 0)*translateBy.x +
+        -glm::row(basis, 1)*translateBy.y +
+        glm::row(basis, 2)*translateBy.z
+    );
+}
+
+float Camera::getPitchXZ()
+{
+    glm::mat3 basis = glm::mat3(matrix);
+    glm::vec3 camDir = glm::row(basis, 2);
+    float dot = glm::dot(camDir, glm::normalize(glm::vec3(camDir.x, camDir.y,0)));
+    return acosf(dot);
+}
+
+void Camera::setPitchXZ(float radians)
+{
+    glm::mat3 basis = glm::mat3(matrix);
+    glm::vec3 camDir = glm::row(basis, 2);
+    glm::vec3 XZDir = glm::normalize(glm::vec3(camDir.x, camDir.y,0));
+    glm::row(matrix, 2, glm::vec4(XZDir, matrix[3][2]));
+    pitch(radians);
+}
+
+
+
+
 void Camera::setActive(bool active)
 {
+    if(this->active == active) return;
+
     this->active = active;
+    if(behavior!=nullptr) behavior->onActiveChanged(*this, active);
     sendMatrix();
 }
 
@@ -121,11 +171,11 @@ void Camera::sendMatrix()
     ResourceManager::instance().setShaderMatricies("viewMat", matrix);
 }
 
-void Camera::update(GLFWwindow* window)
+void Camera::update()
 {
     if(behavior!=nullptr)
     {
-        behavior->update(window, *this);
+        behavior->update(*this);
     }
 }
 

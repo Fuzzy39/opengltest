@@ -6,7 +6,8 @@ class Camera;
 class CameraBehavior
 {
 public:
-    virtual void update(GLFWwindow* window, Camera& cam) = 0;
+    virtual void update( Camera& cam) = 0;
+    virtual void onActiveChanged(Camera& cam, bool newActive) {};
     virtual ~CameraBehavior(){}
 };
 
@@ -21,19 +22,20 @@ private:
 
 public:
     OrbitBehavior(glm::vec3 orbitOrigin, float r, float yValue, float orbitSeconds);
-    virtual void update(GLFWwindow* window, Camera& cam);
+    virtual void update( Camera& cam);
 };
 
 class WackyBehavior : public CameraBehavior
 {
 public:
-    virtual void update(GLFWwindow* window, Camera& cam);
+    virtual void update(Camera& cam);
 };
 
 
 class ControllableBehavior :public CameraBehavior
 {
 public:
-    virtual void update(GLFWwindow* window, Camera& cam);
+    virtual void update( Camera& cam);
+    void onActiveChanged(Camera& cam, bool newActive) override;
 };
 

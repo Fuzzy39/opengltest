@@ -1,4 +1,5 @@
 #include <fuzzygl/glTest.hpp>
+#include <fuzzygl/resources/ResourceManager.hpp>
 
 bool setup(GLFWwindow** window)
 {
@@ -19,23 +20,25 @@ bool setup(GLFWwindow** window)
         return false;
     }
     glfwMakeContextCurrent(*window);
-
+  
     if (!gladLoadGL(glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return false;
     }
 
+
     // setup viewport
     glViewport(0, 0, 800, 800);
     glfwSetFramebufferSizeCallback(*window, framebuffer_size_callback);
     glfwSetKeyCallback(*window, key_callback);
 
-
-    // out of a lack of knowing where to put it, texture related stuff.
+   
     //glDepthRange(-1,1);
     //glDepthFunc(GL_NOTEQUAL);
     glEnable (GL_DEPTH_TEST);
+
+    ResourceManager::instance().setWindow(*window);
 
     return true;
 }

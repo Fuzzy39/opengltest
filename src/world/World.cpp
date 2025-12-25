@@ -24,7 +24,7 @@ void World::updateAspectRatio(float ratio)
     perspective = glm::perspective(glm::radians(45.0f), ratio, 0.1f, 100.0f);
 }
 
-void World::draw(GLFWwindow* window)
+void World::draw()
 {
     float period = 10.0f;
     float incrementBy = 1.0f/objects.size();
@@ -43,10 +43,7 @@ void World::draw(GLFWwindow* window)
     }
 
     // update cameras
-    for(const std::unique_ptr<Camera>& cam: cameras)
-    {
-        cam->update(window);
-    }
+    activeCamera().update();
 }
 
 std::vector<std::unique_ptr<RenderObject>>& World::getObjects()

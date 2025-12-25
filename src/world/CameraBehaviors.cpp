@@ -1,9 +1,12 @@
 #include <fuzzygl/world/Camera.hpp>
+#include <fuzzygl/resources/ResourceManager.hpp>
 
 // gets 3 axes of control. w and s, a and d, and control and space, control the z, x, and y axes, respectively.
 // it's ugly. I know.
-static glm::vec3 getControlVector(GLFWwindow* window)
+static glm::vec3 getControlVector()
 {
+    GLFWwindow* window = ResourceManager::instance().getWindow();
+
     glm::vec3 move = glm::vec3(0);
     if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
@@ -42,7 +45,7 @@ OrbitBehavior::OrbitBehavior(glm::vec3 orbitOrigin, float r, float yValue, float
     periodSeconds = orbitSeconds;
 }
 
-void OrbitBehavior::update(GLFWwindow* window, Camera& cam)
+void OrbitBehavior::update(Camera& cam)
 {
     cam.setPosition( glm::vec3(
         radius*cos(2*M_PI*glfwGetTime()/periodSeconds),
@@ -52,7 +55,7 @@ void OrbitBehavior::update(GLFWwindow* window, Camera& cam)
     cam.lookAt(origin);
     
     // make it adjustable, why not?
-    glm::vec3 controls = getControlVector(window);
+    glm::vec3 controls = getControlVector();
     float speed = .2;
     periodSeconds += speed*controls.x;
     y+= speed*controls.y;
@@ -60,7 +63,7 @@ void OrbitBehavior::update(GLFWwindow* window, Camera& cam)
 }
 
 
-void WackyBehavior::update(GLFWwindow *window, Camera &cam)
+void WackyBehavior::update( Camera &cam)
 {
     float cameraPeriod = 10.0f/(2*M_PI);
 
@@ -75,14 +78,32 @@ void WackyBehavior::update(GLFWwindow *window, Camera &cam)
     cam.yaw(.5 * cos(2*glfwGetTime()/cameraPeriod));
 }
 
-void ControllableBehavior::update(GLFWwindow *window, Camera &cam)
-{
-    glm::vec3 move = getControlVector(window);
-    if(glm::length(move)==0) return; // no movement needed.
-    
 
-    move = .2f * glm::normalize(move);
-    cam.translate(move);
-    cam.lookAt(glm::vec3(0));
-    
+
+void ControllableBehavior::update(Camera &cam)
+{
+    glm::vec3 move = getControlVector();
+    if(glm::length(move)!=0)
+    {
+        move = .2f * glm::normalize(move);
+        cam.translateRelative(move);
+    }
+
+    cam.rotateAbout(.001*ResourceManager::instance().deltaMousePos.x, glm::vec3(0,1,0));
+   // cam.pitchY(.001*ResourceManager::instance().deltaMousePos.y);
+   cam.setPitchXZ(1);
+}
+
+
+void ControllableBehavior::onActiveChanged(Camera &cam, bool newActive)
+{
+    if(newActive)
+    {
+        glfwSetInputMode(ResourceManager::instance().getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
+        cam.setPosition(glm::vec3(0,0,8));
+        cam.lookAt(glm::vec3(0,0,0));
+        return;
+    }
+
+    glfwSetInputMode(ResourceManager::instance().getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL); 
 }

@@ -35,6 +35,11 @@ ResourceManager::ResourceManager()
 
     // initialize our (only) model
     models.push_back(std::unique_ptr<Model>(new Model()));
+
+    prevMousePos = glm::vec2(-1);
+    currMousePos = glm::vec2(-1);
+    relMousePos = glm::vec2(0);
+    deltaMousePos = glm::vec2(0);
 }
 
 Model& ResourceManager::getModel(int index)
@@ -48,6 +53,16 @@ void ResourceManager::setShaderMatricies(const std::string name, glm::mat4 value
     {
         model->getShader().setMat4(name, value);
     }
+}
+
+void ResourceManager::setWindow(GLFWwindow *window)
+{
+    this->window = window;
+}
+
+GLFWwindow* ResourceManager::getWindow()
+{
+    return window;
 }
 
 GLuint ResourceManager::makeTexture(const char *path)
