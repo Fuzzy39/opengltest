@@ -24,14 +24,10 @@ void World::updateAspectRatio(float ratio)
     perspective = glm::perspective(glm::radians(45.0f), ratio, 0.1f, 100.0f);
 }
 
-void World::draw()
+void World::draw(GLFWwindow* window)
 {
     float period = 10.0f;
     float incrementBy = 1.0f/objects.size();
-
-  
-
-    //camera.lookAt(glm::vec3(0));
 
     // set the perspective matrix appropriately for all models.
     ResourceManager::instance().setShaderMatricies("perspectiveMat", perspective);
@@ -44,6 +40,12 @@ void World::draw()
         //object->setTime((i*.7f)/period + i*incrementBy);
         object->draw();
         i++;
+    }
+
+    // update cameras
+    for(const std::unique_ptr<Camera>& cam: cameras)
+    {
+        cam->update(window);
     }
 }
 
@@ -119,8 +121,8 @@ void World::setupWorld()
 {
     // code assumes model starts at origin and stays in the first octant
     glm::vec3 origin = glm::vec3(0,0,0.0f);
-    glm::vec3 unitSize = glm::vec3(.7f);
-    float scale = .5f;
+    glm::vec3 unitSize = glm::vec3(1.0f);
+    float scale = 1.0f;
     //unitSize = scale* unitSize;
     glm::vec3 gridSize = glm::vec3(10,10,10);
 

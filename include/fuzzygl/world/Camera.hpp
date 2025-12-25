@@ -1,11 +1,13 @@
 #pragma once
 #include <common_includes.hpp>
+#include <fuzzygl/world/CameraBehaviors.hpp>
 
 class Camera
 {
 private:
     bool active;
     glm::mat4 matrix;
+    CameraBehavior* behavior;
     //float fovRadians;
 public:
     Camera();
@@ -25,12 +27,19 @@ public:
    void roll(float rollRadians);
    void rotateAbout(float rotateRadians, glm::vec3 axis);
 
+   // active
    void setActive(bool active);
    bool isActive();
 
+   // behavior
+   void setBehavior(CameraBehavior* cb);
+   void update(GLFWwindow* window);
+
+   // util
    std::string toString();
+   ~Camera();
 
 private:
-    void update();
+    void sendMatrix();
 
 };

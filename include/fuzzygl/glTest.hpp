@@ -17,8 +17,6 @@ void key_callback (GLFWwindow *window, int key, int scancode, int action, int mo
 // setup
 bool setup(GLFWwindow** window);
 
-// main
-void adjustCamera(World& world);
 
 
 

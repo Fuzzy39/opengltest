@@ -1,0 +1,88 @@
+#include <fuzzygl/world/Camera.hpp>
+
+// gets 3 axes of control. w and s, a and d, and control and space, control the z, x, and y axes, respectively.
+// it's ugly. I know.
+static glm::vec3 getControlVector(GLFWwindow* window)
+{
+    glm::vec3 move = glm::vec3(0);
+    if(glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    {
+        move= move + glm::vec3(0,0,1);
+    }
+    if(glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    {
+        move= move + glm::vec3(0,0,-1);
+    }
+    if(glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    {
+        move= move + glm::vec3(-1,0,0);
+    }
+    if(glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    {
+        move= move + glm::vec3(1,0,0);
+    }
+    if(glfwGetKey(window, GLFW_KEY_LEFT_SHIFT)== GLFW_PRESS)
+    {
+        move= move + glm::vec3(0,1,0);
+    }
+    if(glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+    {
+        move= move + glm::vec3(0,-1,0);
+    }
+
+    return move;
+}
+
+ 
+OrbitBehavior::OrbitBehavior(glm::vec3 orbitOrigin, float r, float yValue, float orbitSeconds)
+{
+    origin = orbitOrigin;
+    radius = r;
+    y = yValue;
+    periodSeconds = orbitSeconds;
+}
+
+void OrbitBehavior::update(GLFWwindow* window, Camera& cam)
+{
+    cam.setPosition( glm::vec3(
+        radius*cos(2*M_PI*glfwGetTime()/periodSeconds),
+        y,
+        radius*sin(2*M_PI*glfwGetTime()/periodSeconds)
+    ));
+    cam.lookAt(origin);
+    
+    // make it adjustable, why not?
+    glm::vec3 controls = getControlVector(window);
+    float speed = .2;
+    periodSeconds += speed*controls.x;
+    y+= speed*controls.y;
+    radius += speed*controls.z;
+}
+
+
+void WackyBehavior::update(GLFWwindow *window, Camera &cam)
+{
+    float cameraPeriod = 10.0f/(2*M_PI);
+
+    cam.setPosition(glm::vec3(
+        1*sin(2*glfwGetTime()/cameraPeriod), 
+        .2*cos(2*glfwGetTime()/cameraPeriod),
+        4 - 2 * sin(glfwGetTime()/cameraPeriod)
+    ));
+  
+    cam.lookAt(glm::vec3(0));
+    cam.pitch(.5 * cos(glfwGetTime()/cameraPeriod));
+    cam.yaw(.5 * cos(2*glfwGetTime()/cameraPeriod));
+}
+
+void ControllableBehavior::update(GLFWwindow *window, Camera &cam)
+{
+    glm::vec3 move = getControlVector(window);
+    if(glm::length(move)==0) return; // no movement needed.
+    
+
+    move = .2f * glm::normalize(move);
+    cam.translate(move);
+    cam.lookAt(glm::vec3(0));
+    
+}

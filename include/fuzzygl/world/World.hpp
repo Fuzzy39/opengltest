@@ -12,7 +12,7 @@ private:
 public:
     World(float ratio);
     void updateAspectRatio(float ratio);
-    void draw();
+    void draw(GLFWwindow* window);
     std::vector<std::unique_ptr<RenderObject>>& getObjects();
 
     std::unique_ptr<Camera>& getCamera(int index);

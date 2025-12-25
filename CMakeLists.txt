@@ -5,7 +5,7 @@ project(openGLTest LANGUAGES CXX C)
 
 add_executable(gltest "src/gl.c" "src/main.cpp" "src/Disk.cpp" "src/setup.cpp" 
     "src/resources/Shader.cpp" "src/resources/Model.cpp" "src/resources/ResourceManager.cpp"
-    "src/world/RenderObject.cpp" "src/world/World.cpp" "src/world/Camera.cpp"
+    "src/world/RenderObject.cpp" "src/world/World.cpp" "src/world/Camera.cpp" "src/world/CameraBehaviors.cpp"
 )
 target_include_directories(gltest PUBLIC "include")
 
