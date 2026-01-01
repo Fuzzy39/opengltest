@@ -182,30 +182,6 @@ float Camera::getYawXZ()
 
 }
 
-void Camera::setPitchXZ(float radians)
-{
-    if(radians<-M_PI/2.0f) radians = -M_PI/2.0f;
-    if(radians>M_PI/2.0f) radians = M_PI/2.0f;
-
-    glm::vec3 pos = getPosition();
-    matrix = glm::translate(matrix, pos);
-
-    glm::mat3 basis = glm::mat3(matrix);
-    glm::vec3 camDir = glm::row(basis, 2);
-    glm::vec3 XZDir = glm::normalize(glm::vec3(camDir.x, 0, camDir.z));
-
-    matrix = glm::row(matrix, 0, glm::vec4(glm::cross(glm::vec3(0,1,0), XZDir), 0));
-    matrix = glm::row(matrix, 1, glm::vec4(0, 1, 0, 0));
-    matrix = glm::row(matrix, 2, glm::vec4(XZDir, 0));
-
-    // pitch
-    matrix = glm::rotate(matrix, radians, glm::vec3(matrix[0]));
-
-    matrix = glm::translate(matrix, -pos);
-    sendMatrix();
-
-}
-
 void Camera::setOrientationXZ(float pitch, float yaw)
 {
     // limit pitch

@@ -35,7 +35,6 @@ public:
 
     float getPitchXZ(); // get pitch relative to the XZ plane
     float getYawXZ();
-    void setPitchXZ(float radians);
     void Camera::setOrientationXZ(float pitch, float yaw);
 
 

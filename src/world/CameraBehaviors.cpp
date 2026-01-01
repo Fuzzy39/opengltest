@@ -90,16 +90,8 @@ void ControllableBehavior::update(Camera &cam)
     }
 
    
-   // cam.yaw(.001*ResourceManager::instance().deltaMousePos.x);
-    //cam.pitch(.001*ResourceManager::instance().deltaMousePos.y);
-   // cam.rotateAbout(.001*ResourceManager::instance().deltaMousePos.x, glm::vec3(0,1,0));
-    //cam.setPitchXZ(sin(glfwGetTime()));
-    //cam.getPitchXZ()+.001*ResourceManager::instance().deltaMousePos.y
-    //std::cout<<"Yaw: "<<cam.getYawXZ()<<"\n";
-
     cam.setOrientationXZ(
         cam.getPitchXZ()-.001*ResourceManager::instance().deltaMousePos.y, 
-        //M_PI*sin(glfwGetTime()/4.0f)
         cam.getYawXZ()+.001*ResourceManager::instance().deltaMousePos.x
     );
 }
