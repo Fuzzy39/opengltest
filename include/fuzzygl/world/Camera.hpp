@@ -31,8 +31,13 @@ public:
     // functions for first person camera
     // translate relative to the direction of the camera, rather than to the world.
     void translateRelative(glm::vec3 translateBy);
+    void translateRelativeXZ(glm::vec3 translateBy);
+
     float getPitchXZ(); // get pitch relative to the XZ plane
+    float getYawXZ();
     void setPitchXZ(float radians);
+    void Camera::setOrientationXZ(float pitch, float yaw);
+
 
    // active
    void setActive(bool active);

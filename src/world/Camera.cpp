@@ -13,7 +13,7 @@ Camera::Camera(glm::vec3 position)
 
 glm::vec3 Camera::getPosition()
 {
-    glm::mat4 inv = glm::affineInverse(matrix);	
+    glm::mat4 inv = glm::affineInverse(matrix);
 
     return inv * glm::vec4(0,0,0,1);
 }
@@ -36,7 +36,7 @@ void Camera::setPosition(glm::vec3 position)
 
 void Camera::translate(glm::vec3 translateBy)
 {
-  
+
     matrix = glm::translate(matrix, translateBy);
     sendMatrix();
 }
@@ -52,8 +52,8 @@ void Camera::resetRotation()
 void Camera::lookAt(glm::vec3 target)
 {
     // Okay, basic strategy
-    // glm::vec3 basis[] = 
-    // { 
+    // glm::vec3 basis[] =
+    // {
     //     glm::normalize(target-getPosition()),
     //     glm::normalize(glm::cross(basis[0], glm::vec3(0,1,0))),
     //     glm::normalize(glm::cross(basis[0], basis[1]))
@@ -73,7 +73,7 @@ void Camera::pitch(float pitchRadians)
 {
     glm::vec3 pos = getPosition();
     matrix = glm::translate(matrix, pos);
-    matrix = glm::rotate(matrix, pitchRadians, glm::vec3(matrix[0]));   
+    matrix = glm::rotate(matrix, pitchRadians, glm::vec3(matrix[0]));
     matrix = glm::translate(matrix, -pos);
     sendMatrix();
 }
@@ -114,7 +114,7 @@ void Camera::rotateAbout(float rotateRadians, glm::vec3 axis)
 void Camera::translateRelative(glm::vec3 translateBy)
 {
     glm::mat3 basis = glm::mat3(matrix);
-    
+
     translate(
         -glm::row(basis, 0)*translateBy.x +
         -glm::row(basis, 1)*translateBy.y +
@@ -122,23 +122,101 @@ void Camera::translateRelative(glm::vec3 translateBy)
     );
 }
 
+void Camera::translateRelativeXZ(glm::vec3 translateBy)
+{
+    glm::mat3 basis = glm::mat3(matrix);
+    glm::vec3 camDir =  glm::row(basis, 2);
+    camDir = glm::normalize(glm::vec3(camDir.x, 0, camDir.z));
+
+    translate(
+        glm::cross(camDir, glm::vec3(0,1,0))*translateBy.x
+        - glm::vec3(0,1,0)*translateBy.y
+        + camDir*translateBy.z
+    );
+}
+
+
+
 float Camera::getPitchXZ()
 {
     glm::mat3 basis = glm::mat3(matrix);
     glm::vec3 camDir = glm::row(basis, 2);
-    float dot = glm::dot(camDir, glm::normalize(glm::vec3(camDir.x, camDir.y,0)));
-    return acosf(dot);
+    float dot = glm::dot(glm::normalize(camDir), glm::normalize(glm::vec3(camDir.x, 0, camDir.z)));
+    float toRet = acosf(dot);
+    if(toRet!=toRet)
+    {
+        return 1;
+    }
+
+    if(camDir.y>0)
+    {
+        toRet*=-1;
+    }
+
+
+    return toRet;
+}
+
+float Camera::getYawXZ()
+{
+    glm::mat3 basis = glm::mat3(matrix);
+    glm::vec3 camDir = glm::row(basis, 2);
+    camDir.y = 0;
+    camDir = glm::normalize(camDir);
+    camDir = -1.0f*camDir;
+    // get the angle
+    // camDir is a lie
+
+    float yaw = atan(camDir.z/camDir.x);
+    if(camDir.z<0 && camDir.x<0)
+    {
+         yaw = yaw-M_PI;
+    }
+
+    if(camDir.z>0 && camDir.x<0)
+    {
+        yaw = M_PI+yaw;
+    }
+    //std::cout<< "Cam Dir " <<(camDir.x)<<", " <<camDir.z<<"\n";
+    return yaw;
+
 }
 
 void Camera::setPitchXZ(float radians)
 {
+    if(radians<-M_PI/2.0f) radians = -M_PI/2.0f;
+    if(radians>M_PI/2.0f) radians = M_PI/2.0f;
+
+    glm::vec3 pos = getPosition();
+    matrix = glm::translate(matrix, pos);
+
     glm::mat3 basis = glm::mat3(matrix);
     glm::vec3 camDir = glm::row(basis, 2);
-    glm::vec3 XZDir = glm::normalize(glm::vec3(camDir.x, camDir.y,0));
-    glm::row(matrix, 2, glm::vec4(XZDir, matrix[3][2]));
-    pitch(radians);
+    glm::vec3 XZDir = glm::normalize(glm::vec3(camDir.x, 0, camDir.z));
+
+    matrix = glm::row(matrix, 0, glm::vec4(glm::cross(glm::vec3(0,1,0), XZDir), 0));
+    matrix = glm::row(matrix, 1, glm::vec4(0, 1, 0, 0));
+    matrix = glm::row(matrix, 2, glm::vec4(XZDir, 0));
+
+    // pitch
+    matrix = glm::rotate(matrix, radians, glm::vec3(matrix[0]));
+
+    matrix = glm::translate(matrix, -pos);
+    sendMatrix();
+
 }
 
+void Camera::setOrientationXZ(float pitch, float yaw)
+{
+    // limit pitch
+    if(pitch<-M_PI/2.0f) pitch = -M_PI/2.0f;
+    if(pitch>M_PI/2.0f) pitch = M_PI/2.0f;
+
+    glm::vec3 orientation = glm::vec3(cos(yaw)*cos(pitch), sin(pitch), sin(yaw)*cos(pitch));
+    //std::cout<< "Orientation" <<(orientation.x)<<", " <<orientation.y<<", "<<orientation.z;
+    lookAt(getPosition()+orientation);
+
+}
 
 
 
@@ -161,7 +239,7 @@ void Camera::setBehavior(CameraBehavior *cb)
     {
         delete behavior;
     }
-    
+
     behavior = cb;
 }
 
@@ -184,7 +262,7 @@ std::string Camera::toString()
 {
 
     std::ostringstream buffer;
-    buffer << "Camera with pos " <<(getPosition().x)<<", " <<getPosition().y<<", "<<getPosition().z; 
+    buffer << "Camera with pos " <<(getPosition().x)<<", " <<getPosition().y<<", "<<getPosition().z;
     return buffer.str();
 }
 
