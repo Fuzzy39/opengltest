@@ -16,7 +16,7 @@ World::World(float ratio)
     //camera.pitch(-.1);
     // make objects and have a grand time or whatever
     setupWorld();
-
+    //std::cout<<"World setup!\n";
 }
 
 void World::updateAspectRatio(float ratio)
@@ -132,7 +132,7 @@ void World::setupWorld()
         unitSize.z*gridSize.z
     );
     glm::vec3 start = -.5f*size+origin+.5f*unitSize;//-glm::vec3(unitSize.x, unitSize.y, 0);
-    Model& m = ResourceManager::instance().getModel(0);
+    Model& m = ResourceManager::instance().getModel(ResourceManager::CUBE);
     
     for(int x = 0; x<gridSize.x; x++)   
     {

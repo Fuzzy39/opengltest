@@ -1,38 +1,20 @@
 #include <fuzzygl/resources/Model.hpp>
 
-Model::Vertex::Vertex(glm::vec3 vert, glm::vec2 texVert)
+Vertex::Vertex(glm::vec3 vert, glm::vec2 texVert)
 {
     vertex = vert;
     textureVert = texVert;
 }
 
 
-Model::Model()
+Model::Model(std::vector<Vertex> verts)
 {
     // setup the shader
     Shader* sh = new Shader("shaders/vertex.glsl", "shaders/fragment.glsl");
     shader = std::unique_ptr<Shader>(sh);
 
     // setup the VAO
-    Vertex verts[] = {
-        // bottom
-        Vertex(glm::vec3(0,0,0), glm::vec2(0,0)),
-        Vertex(glm::vec3(1,0,0), glm::vec2(1,0)),
-        Vertex(glm::vec3(.5,sqrt(3)/2,0), glm::vec2(.5,1)),
-
-        Vertex(glm::vec3(0,0,0), glm::vec2(0,0)),
-        Vertex(glm::vec3(1,0,0), glm::vec2(1,0)),
-        Vertex(glm::vec3(.5,.5/sqrt(3),-.75f), glm::vec2(.5,1)),
-
-        Vertex(glm::vec3(0,0,0), glm::vec2(0,0)),
-        Vertex(glm::vec3(.5,sqrt(3)/2,0), glm::vec2(1,0)),
-        Vertex(glm::vec3(.5,.5/sqrt(3),-.75f), glm::vec2(.5,1)),
-
-        Vertex(glm::vec3(1,0,0), glm::vec2(0,0)),
-        Vertex(glm::vec3(.5,sqrt(3)/2,0), glm::vec2(1,0)),
-        Vertex(glm::vec3(.5,.5/sqrt(3),-.75f), glm::vec2(.5,1)),
-    };
-    numVertices = sizeof(verts)/sizeof(Vertex);
+    numVertices =  verts.size();
 
     // calculate center.
     center = glm::vec3(0);
@@ -41,7 +23,7 @@ Model::Model()
         center+= verts[i].vertex;
     }
     center *= (1.0f/numVertices);
-
+    std::cout<<numVertices<<", "<<center.x<<", "<<center.y<<", "<<center.z<<"\n";
 
     
     glGenVertexArrays(1, &vertexArrayObject);
@@ -53,7 +35,7 @@ Model::Model()
     glBindBuffer(GL_ARRAY_BUFFER, VertexBufferObject); //assign VectexBufferObject as an array buffer (of which there can only be one?)
 
     // get data
-    glBufferData(GL_ARRAY_BUFFER, sizeof(verts), verts, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, numVertices*sizeof(Vertex), verts.data(), GL_STATIC_DRAW);
     setVertexAttributes();
 
 }
@@ -94,3 +76,4 @@ void Model::setVertexAttributes()
     );
     glEnableVertexAttribArray(1);
 }
+

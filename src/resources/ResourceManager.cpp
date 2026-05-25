@@ -34,7 +34,8 @@ ResourceManager::ResourceManager()
     glBindTexture(GL_TEXTURE_2D, tex2);
 
     // initialize our (only) model
-    models.push_back(std::unique_ptr<Model>(new Model()));
+    models.push_back(std::unique_ptr<Model>(new Model(Tetrahedron())));
+    models.push_back(std::unique_ptr<Model>(new Model(Prism(2))));
 
     prevMousePos = glm::vec2(-1);
     currMousePos = glm::vec2(-1);

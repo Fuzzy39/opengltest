@@ -1,11 +1,19 @@
 #pragma once
 #include <common_includes.hpp>
 #include <fuzzygl/resources/Model.hpp>
+#include <fuzzygl/resources/ModelData.hpp> 
 
 /// @brief Resource Manager is a singleton class that manages application wide resources,
 // such as 3d models and textures.
 class ResourceManager
 {
+public:
+    enum Models
+    {
+        TETRAHEDRON,
+        CUBE
+    };
+
 private:
     std::vector<std::unique_ptr<Model>> models;
     GLFWwindow * window;
