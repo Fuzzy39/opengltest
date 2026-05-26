@@ -25,3 +25,7 @@
 #define GLM_ENABLE_EXPERIMENTAL 
 #include <glm/gtx/vector_angle.hpp>
 #include <glm/gtx/string_cast.hpp>
+
+const bool RENDER_DISK = false;
+const bool WORLD_TETRAHEDRONS = true; // cubes or tetrahedrons
+const bool WORLD_DO_ROTATATION = true;

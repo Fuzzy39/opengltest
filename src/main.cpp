@@ -66,7 +66,7 @@ int  main(void)
         
 
         disk->setTime( glfwGetTime()/period);
-        //disk->draw();
+        if(RENDER_DISK) disk->draw();
 
         // fiddle with the camera.
 
