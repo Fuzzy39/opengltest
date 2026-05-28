@@ -51,7 +51,7 @@ void RenderObject::setScale(glm::vec3 toSet)
 void RenderObject::draw()
 {
     // maybe a bit of a hack. sue me.
-    model.getShader().setInt("tex", 2); 
+    model.getShader().setInt("tex", 3); 
     model.getShader().setMat4("modelMat", getModelMat());
     // Set the transform matrix...
 

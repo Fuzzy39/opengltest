@@ -25,6 +25,7 @@ ResourceManager::ResourceManager()
     GLuint tex0 = makeTexture("resources/FROG.png");
     GLuint tex1 = makeTexture("resources/Frog2.jpg");
     GLuint tex2 = makeTexture("resources/greg.jpg");
+    GLuint tex3 = makeTexture("resources/stopper.png");
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, tex0);
@@ -32,6 +33,8 @@ ResourceManager::ResourceManager()
     glBindTexture(GL_TEXTURE_2D, tex1);
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, tex2);
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, tex3);
 
     // initialize our (only) model
     models.push_back(std::unique_ptr<Model>(new Model(Tetrahedron())));

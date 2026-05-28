@@ -85,7 +85,7 @@ void ControllableBehavior::update(Camera &cam)
     glm::vec3 move = getControlVector();
     if(glm::length(move)!=0)
     {
-        move = .2f * glm::normalize(move);
+        move = .1f * glm::normalize(move);
         cam.translateRelativeXZ(move);
     }
 

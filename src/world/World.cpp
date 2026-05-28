@@ -180,7 +180,7 @@ void World::setupWorld()
     //unitSize = scale* unitSize;
     glm::vec3 gridSize = glm::vec3(10, 1, 10);
 
-    int numObjects = (int)(gridSize.x * gridSize.y * gridSize.z);
+    int numObjects = (int)(gridSize.x * gridSize.z);
     float deltaRotation = (2.0f * M_PI) / numObjects;
 
     glm::vec3 size = glm::vec3(
@@ -193,33 +193,35 @@ void World::setupWorld()
 
     for (int x = 0; x < gridSize.x; x++)
     {
-        for (int y = 0; y < gridSize.y; y++)
+        
+        for (int z = 0; z < gridSize.z; z++)
         {
-            for (int z = 0; z < gridSize.z; z++)
-            {
-                // create the object
-                RenderObject* obj = new RenderObject(m);
-                objects.push_back(std::unique_ptr<RenderObject>(obj));
-                int i = (int)(z + y * gridSize.z + x * gridSize.y * gridSize.z);
+            // create the object
+            RenderObject* obj = new RenderObject(m);
+            objects.push_back(std::unique_ptr<RenderObject>(obj));
+            int i = (int)(z + x * gridSize.y * gridSize.z);
 
-                // rotate it
-                // glm::vec3 axis = glm::vec3(sin(i*deltaRotation),1,0);
-                // axis = axis/glm::length(axis);
-                //obj->worldPos=glm::translate(obj->worldPos, -.5f*unitSize);
-                // glm::vec3 axis =  glm::vec3(0,0,1);
-                // obj->worldPos = glm::rotate(obj->worldPos, i*deltaRotation, axis);
-                //obj->worldPos=glm::translate(obj->worldPos, .5f*unitSize);
+            // rotate it
+            // glm::vec3 axis = glm::vec3(sin(i*deltaRotation),1,0);
+            // axis = axis/glm::length(axis);
+            //obj->worldPos=glm::translate(obj->worldPos, -.5f*unitSize);
+            // glm::vec3 axis =  glm::vec3(0,0,1);
+            // obj->worldPos = glm::rotate(obj->worldPos, i*deltaRotation, axis);
+            //obj->worldPos=glm::translate(obj->worldPos, .5f*unitSize);
 
-                //scale it
-                obj->setScale(glm::vec3(scale) * ((z + 1) / gridSize.z));
+            //scale it
+            obj->rotateBy(M_PI / 2.0f, glm::vec3(1, 0, 0));
+            glm::vec3 scaleVec = glm::vec3(scale);
+            scaleVec.y *= ((z + 1) / gridSize.z) * ((x + 1) / gridSize.x);
+            obj->setScale( scaleVec);
 
 
 
-                //translate it
-                glm::vec3 pos = start + glm::vec3(x * unitSize.x, y * unitSize.y, z * unitSize.z);
-                //std::cout<< "x: "<<pos.x<<" y: "<<pos.y<<" z: "<<pos.z<<"\n";
-                obj->setTranslation(pos);
+            //translate it
+            glm::vec3 pos = start + glm::vec3(x * unitSize.x, 0, z * unitSize.z);
+            //std::cout<< "x: "<<pos.x<<" y: "<<pos.y<<" z: "<<pos.z<<"\n";
+            obj->setTranslation(pos);
             }
-        }
+        
     }
 }
