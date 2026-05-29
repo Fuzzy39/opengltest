@@ -13,10 +13,15 @@ public:
         TETRAHEDRON,
         CUBE
     };
-
+    enum Shaders
+    {
+        RAINBOW,
+        OCEAN
+    };
 private:
+    std::vector<std::unique_ptr<Shader>> shaders;
     std::vector<std::unique_ptr<Model>> models;
-    GLFWwindow * window;
+    GLFWwindow* window;
 public:
     glm::vec2 prevMousePos;
     glm::vec2 currMousePos;
@@ -32,7 +37,8 @@ private:
 public:
     static ResourceManager& instance();
     Model& getModel(int index);
-    void setShaderMatricies(const std::string name, glm::mat4 value );
+    Shader& getShader(int index);
+    void setShaderMatricies(const std::string name, glm::mat4 value);
     void setWindow(GLFWwindow * window);
     GLFWwindow* getWindow();
 };

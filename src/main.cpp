@@ -40,7 +40,7 @@ int  main(void)
         world->getCamera(0)->setBehavior(new WackyBehavior());
 
         world->addCamera();
-        world->getCamera(1)->setBehavior(new OrbitBehavior(glm::vec3(0), 20, 6, 8));
+        world->getCamera(1)->setBehavior(new OrbitBehavior(glm::vec3(0), 20, 6, 60));
 
         world->addCamera();
         world->getCamera(2)->setBehavior(new ControllableBehavior());
@@ -60,7 +60,7 @@ int  main(void)
         mouseUpdate(window);
 
         // clear the buffer with a color.
-        glClearColor(.3f, .3f, .4f, 1.0f);
+        glClearColor(.4f, .6f, .8f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         

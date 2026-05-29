@@ -1,6 +1,7 @@
 #include <fuzzygl/world/World.hpp>
 #include <fuzzygl/resources/ResourceManager.hpp>
 
+
 World::World(float ratio)
 {
     // perspective matrix
@@ -30,17 +31,20 @@ void World::updateAspectRatio(float ratio)
 
 void World::draw()
 {
-    float period = 10.0f;
+    float period = 1.57f;
     float incrementBy = 1.0f/objects.size();
 
-    // set the perspective matrix appropriately for all models.
+    // set the perspective matrix appropriately for all shaders.
     ResourceManager::instance().setShaderMatricies("perspectiveMat", perspective);
     
     // draw objects
     float i = 0;
     for(const std::unique_ptr<RenderObject>& object: objects) 
     {
-        if(WORLD_DO_ROTATATION) object->setTime(glfwGetTime()*(i*.01f)/period + i*incrementBy);
+        float addTo = OBJECT_DO_ROTATION ? i * incrementBy : 0;
+        float baseSpeed = OBJECT_DO_ROTATION ? (i * .01f) : 1;
+
+        if(WORLD_DO_TIME) object->setTime(glfwGetTime()*baseSpeed/period + addTo);
         //object->setTime((i*.7f)/period + i*incrementBy);
         object->draw();
         i++;
@@ -136,8 +140,9 @@ void World::setupTetrahedron()
         unitSize.z*gridSize.z
     );
     glm::vec3 start = -.5f*size+origin+.5f*unitSize;//-glm::vec3(unitSize.x, unitSize.y, 0);
-    Model& m = ResourceManager::instance().getModel(ResourceManager::TETRAHEDRON);
-    
+    Model& m = ResourceManager::instance().getModel(ResourceManager::Models::TETRAHEDRON);
+    Shader& shader = ResourceManager::instance().getShader(ResourceManager::Shaders::RAINBOW);
+
     for(int x = 0; x<gridSize.x; x++)   
     {
         for(int y = 0; y<gridSize.y; y++)   
@@ -145,7 +150,7 @@ void World::setupTetrahedron()
             for(int z = 0; z<gridSize.z; z++)   
             {
                 // create the object
-                RenderObject* obj = new RenderObject(m);
+                RenderObject* obj = new RenderObject(m, shader);
                 objects.push_back(std::unique_ptr<RenderObject>(obj));
                 int i = (int)(z+y*gridSize.z+x*gridSize.y*gridSize.z);
                 
@@ -178,7 +183,7 @@ void World::setupWorld()
     glm::vec3 unitSize = glm::vec3(1.0f);
     float scale = 1.0f;
     //unitSize = scale* unitSize;
-    glm::vec3 gridSize = glm::vec3(10, 1, 10);
+    glm::vec3 gridSize = glm::vec3(30, 1, 30);
 
     int numObjects = (int)(gridSize.x * gridSize.z);
     float deltaRotation = (2.0f * M_PI) / numObjects;
@@ -189,7 +194,9 @@ void World::setupWorld()
         unitSize.z * gridSize.z
     );
     glm::vec3 start = -.5f * size + origin + .5f * unitSize;//-glm::vec3(unitSize.x, unitSize.y, 0);
-    Model& m = ResourceManager::instance().getModel(ResourceManager::CUBE);
+    Model& m = ResourceManager::instance().getModel(ResourceManager::Models::CUBE);
+    Shader& shader = ResourceManager::instance().getShader(ResourceManager::Shaders::OCEAN);
+
 
     for (int x = 0; x < gridSize.x; x++)
     {
@@ -197,31 +204,24 @@ void World::setupWorld()
         for (int z = 0; z < gridSize.z; z++)
         {
             // create the object
-            RenderObject* obj = new RenderObject(m);
+            RenderObject* obj = new RenderObject(m, shader);
             objects.push_back(std::unique_ptr<RenderObject>(obj));
             int i = (int)(z + x * gridSize.y * gridSize.z);
-
-            // rotate it
-            // glm::vec3 axis = glm::vec3(sin(i*deltaRotation),1,0);
-            // axis = axis/glm::length(axis);
-            //obj->worldPos=glm::translate(obj->worldPos, -.5f*unitSize);
-            // glm::vec3 axis =  glm::vec3(0,0,1);
-            // obj->worldPos = glm::rotate(obj->worldPos, i*deltaRotation, axis);
-            //obj->worldPos=glm::translate(obj->worldPos, .5f*unitSize);
 
             //scale it
             obj->rotateBy(M_PI / 2.0f, glm::vec3(1, 0, 0));
             glm::vec3 scaleVec = glm::vec3(scale);
             scaleVec.y *= ((z + 1) / gridSize.z) * ((x + 1) / gridSize.x);
-            obj->setScale( scaleVec);
-
-
+            //obj->setScale( scaleVec);
 
             //translate it
             glm::vec3 pos = start + glm::vec3(x * unitSize.x, 0, z * unitSize.z);
             //std::cout<< "x: "<<pos.x<<" y: "<<pos.y<<" z: "<<pos.z<<"\n";
             obj->setTranslation(pos);
-            }
+
+            float randoffset = .03f * (rand() % 100);
+            obj->setTimeOffset( .4*(x + z) +randoffset);
+        }
         
     }
 }

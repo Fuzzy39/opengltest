@@ -38,8 +38,13 @@ ResourceManager::ResourceManager()
 
     // initialize our (only) model
     models.push_back(std::unique_ptr<Model>(new Model(Tetrahedron())));
-    models.push_back(std::unique_ptr<Model>(new Model(Prism(2))));
+    models.push_back(std::unique_ptr<Model>(new Model(Prism(1))));
 
+   
+    shaders.push_back(std::unique_ptr<Shader>(new Shader("shaders/rainbow/vertex.glsl", "shaders/rainbow/fragment.glsl")));
+    shaders.push_back(std::unique_ptr<Shader>(new Shader("shaders/ocean/vertex.glsl", "shaders/ocean/fragment.glsl")));
+
+    
     prevMousePos = glm::vec2(-1);
     currMousePos = glm::vec2(-1);
     relMousePos = glm::vec2(0);
@@ -50,12 +55,16 @@ Model& ResourceManager::getModel(int index)
 {
     return *models[index];
 }
+Shader& ResourceManager::getShader(int index)
+{
+    return *shaders[index];
+}
 
 void ResourceManager::setShaderMatricies(const std::string name, glm::mat4 value)
 {
-    for(const std::unique_ptr<Model>& model : models)
+    for (const std::unique_ptr<Shader>& i : shaders)
     {
-        model->getShader().setMat4(name, value);
+        i->setMat4(name, value);
     }
 }
 

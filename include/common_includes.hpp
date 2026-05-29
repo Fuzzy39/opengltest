@@ -28,4 +28,5 @@
 
 const bool RENDER_DISK = false;
 const bool WORLD_TETRAHEDRONS = false; // cubes or tetrahedrons
-const bool WORLD_DO_ROTATATION = false;
+const bool WORLD_DO_TIME = true;
+const bool OBJECT_DO_ROTATION = false;

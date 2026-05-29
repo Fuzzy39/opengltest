@@ -8,14 +8,12 @@
 class Model
 {
 private:
-    std::unique_ptr<Shader> shader;
     GLuint vertexArrayObject;
     int numVertices;
     glm::vec3 center;
 
 public:
     Model(std::vector<Vertex> vertices);
-    Shader& getShader();
     GLuint getVAO();
     int getNumVertices();
 

@@ -5,6 +5,7 @@ layout (location = 1) in vec2 inTexPos;
 
 
 uniform float time; 
+uniform float offset;
 uniform mat4 modelMat;
 uniform mat4 viewMat;
 uniform mat4 perspectiveMat;
@@ -36,7 +37,7 @@ void main()
     float bright =min(1-((gl_Position.z-maxBright)/(minBright-maxBright)),1);
 
     bright = bright*.5f;
-    color = sinusoid(time);
+    color = sinusoid(time+offset);
     if(doDarkening)
     {
         color = (color*.5f)+vec4(bright, bright, bright, 1.0);

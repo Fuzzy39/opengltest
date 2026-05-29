@@ -1,7 +1,8 @@
 #include <fuzzygl/world/World.hpp>
 
-RenderObject::RenderObject(Model& model) : model(model)
+RenderObject::RenderObject(Model& model, Shader& shader) : model(model), shader(shader)
 {
+    offset = 0;
     translation = -model.getCenter();
     resetRotation();
     scale = glm::vec3(1);
@@ -48,11 +49,17 @@ void RenderObject::setScale(glm::vec3 toSet)
     scale = toSet;
 }
 
+void RenderObject::setTimeOffset(float offset)
+{
+    this->offset = offset;
+}
+
 void RenderObject::draw()
 {
     // maybe a bit of a hack. sue me.
-    model.getShader().setInt("tex", 3); 
-    model.getShader().setMat4("modelMat", getModelMat());
+    shader.setFloat("offset", offset);
+    shader.setInt("tex", 3); 
+    shader.setMat4("modelMat", getModelMat());
     // Set the transform matrix...
 
     glBindVertexArray(model.getVAO());
@@ -62,11 +69,14 @@ void RenderObject::draw()
 
  void RenderObject::setTime(float time)
  {
+    
+    shader.setFloat("time", time);
 
-    model.getShader().setFloat("time", time);
-
-    resetRotation();
-    rotateBy(time*2*M_PI, glm::vec3(1, 0,0));
+    if (OBJECT_DO_ROTATION)
+    {
+        resetRotation();
+        rotateBy(time * 2 * M_PI, glm::vec3(1, 0, 0));
+    }
  }
 
  glm::mat4 RenderObject::getModelMat()

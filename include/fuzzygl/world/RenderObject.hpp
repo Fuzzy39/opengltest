@@ -6,14 +6,16 @@ class RenderObject
 {
 private:
     Model& model;
+    Shader& shader;
 private:
     glm::vec3 translation;
     // where (1,0,0) is not rotated. represents the point where (1,0,0) would end up after being rotated.
     glm::mat4 rotation;
     glm::vec3 scale;
+    float offset;
 
 public:
-    RenderObject(Model& model);
+    RenderObject(Model& model, Shader& shader);
 
     glm::vec3 getTranslation();
     void setTranslation(glm::vec3 toSet);
@@ -26,6 +28,8 @@ public:
 
     glm::vec3 getScale();
     void setScale(glm::vec3 toSet);
+
+    void setTimeOffset(float offset);
 
 
     void draw();

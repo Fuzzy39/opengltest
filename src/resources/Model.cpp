@@ -9,9 +9,6 @@ Vertex::Vertex(glm::vec3 vert, glm::vec2 texVert)
 
 Model::Model(std::vector<Vertex> verts)
 {
-    // setup the shader
-    Shader* sh = new Shader("shaders/vertex.glsl", "shaders/fragment.glsl");
-    shader = std::unique_ptr<Shader>(sh);
 
     // setup the VAO
     numVertices =  verts.size();
@@ -40,10 +37,6 @@ Model::Model(std::vector<Vertex> verts)
 
 }
 
-Shader& Model::getShader()
-{
-    return *shader;
-}
 
 
 GLuint Model::getVAO()
